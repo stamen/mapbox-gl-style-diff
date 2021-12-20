@@ -9,7 +9,8 @@ Currently detects
 
 To be implemented
 
-- changes to sources
+- changes to stylesheet parameters outside `layers`
+- detecting renamed layers (in a way beyond showing them as removed and immediately readded)
 
 
 ## running the thing
