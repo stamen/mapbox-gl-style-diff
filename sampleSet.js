@@ -559,19 +559,7 @@ a = {
       "id": "land",
       "type": "background",
       "paint": {
-        "background-color": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          "#F6F2E5",
-          13,
-          "rgba(248, 245, 235, 1)"
-        ]
+        "background-color": "gray"
       }
     },
     {
@@ -738,7 +726,7 @@ a = {
             "get",
             "class"
           ],
-          "secondary"
+          "tertiary"
         ],
         [
           "==",
@@ -835,117 +823,7 @@ a = {
         "line-color": "rgba(168, 165, 165, 1)"
       }
     },
-    {
-      "id": "tunnel_primary-casing",
-      "type": "line",
-      "source": "AmznVector",
-      "source-layer": "transportation",
-      "minzoom": 14,
-      "filter": [
-        "all",
-        [
-          "==",
-          [
-            "get",
-            "brunnel"
-          ],
-          "tunnel"
-        ],
-        [
-          "==",
-          [
-            "get",
-            "class"
-          ],
-          "primary"
-        ],
-        [
-          "==",
-          [
-            "geometry-type"
-          ],
-          "LineString"
-        ]
-      ],
-      "layout": {
-        "line-join": "round"
-      },
-      "paint": {
-        "line-width": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          14,
-          0.6,
-          18,
-          1.5
-        ],
-        "line-gap-width": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          14,
-          4,
-          17,
-          18,
-          18,
-          30,
-          20,
-          100
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          14,
-          0,
-          14.5,
-          1
-        ],
-        "line-dasharray": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "literal",
-            [
-              8,
-              4
-            ]
-          ],
-          16,
-          [
-            "literal",
-            [
-              10,
-              5
-            ]
-          ],
-          18,
-          [
-            "literal",
-            [
-              12,
-              8
-            ]
-          ]
-        ],
-        "line-color": "rgba(168, 165, 165, 1)"
-      }
-    },
+
     {
       "id": "tunnel_trunk-casing",
       "type": "line",

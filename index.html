@@ -6,21 +6,19 @@
 
 		body {
 			font-family: Arial, sans-serif;
+			background:#eee;
 		}
 		.third {
-			width:33%;
+			width:31%;
 			height:100%;
 			float:left;
+			margin:1vw;
 			/*overflow:hidden;*/
 		}
-
-		.diffEntry {
-			padding:15px;
-			border-bottom:1px solid #ccc;
-			color:#aaa;
-			line-height:1.5em;
+		textarea {
+			width:100%;
+			height:80%;
 		}
-
 		.removeLayer .layerName {
 			background:orangered;
 		}
@@ -33,13 +31,14 @@
 		}
 
 		.layer {
-			border:1px solid #aaa;
+			border:1px solid #999;
 			border-radius:5px;
-			margin:10px;
-			overflow: hidden
+			margin-top:10px;
+			overflow: hidden;
+			background:white;
 		}
 		.layerName {
-			background:#666;
+			background:#999;
 			border-radius:5px;
 			margin-right:5px;
 			padding:5px;
@@ -69,9 +68,11 @@
 		}
 		.change {
 			padding:10px;
-			border-top:1px solid #eee;
 		}
 
+		.borderBottom {
+			border-bottom:1px solid #eee;
+		}
 		quiet {
 			opacity:0.25;
 			text-decoration: line-through;			
@@ -79,12 +80,19 @@
 
 	</style>
 	<body>
-		<textarea id='before' class='third'>
-		</textarea>
-		<textarea id='after' class='third'>
-		</textarea>
+		<div class='third'>
+			<h3>Before</h3>
+			<textarea id='before'>
+			</textarea>
+		</div>
+		<div class='third'>
+			<h3>After</h3>
+			<textarea id='after'>
+			</textarea>
+		</div>
 		<div class='third' style='overflow:scroll'>
-			<button onclick='parse()'>Get diff</button>
+			<button onclick='parse()' style='display:block; width:100%; margin-top:40px; color:white; background:green; padding:10px; border-radius:10px'>Get Diff</button>
+
 			<div id='deltas'>
 				<h3>Between layers</h3>
 				<div id='layers'>
@@ -95,23 +103,20 @@
 
 				<div id='all'></div>
 			</div>
+
 		</div>
 	</body>
 	<script>
 
 		const before = document.querySelector('#before');
 		const after = document.querySelector('#after');
-		before.value = JSON.stringify(a, null, 2);
-		after.value = JSON.stringify(b, null, 2)
+		before.value = JSON.stringify(b, null, 2);
+		after.value = JSON.stringify(a, null, 2)
 		
 		
 		function parse() {
 			const diff = diffStyles(JSON.parse(before.value), JSON.parse(after.value));
 			console.log(diff)
-			const entries = d3.select('#deltas')
-				.selectAll('.diffEntry');
-
-			entries.remove();
 
 			d3.select('#all')
 				.selectAll('.layer')
@@ -124,8 +129,15 @@
 				.data(diff.layers)
 				.enter()
 				.append('div')
-				.attr('class', 'layer')
-				.text(l=>`${l.layer} ${l.change[0]} to under ${l.change[1]}`)
+				.attr('class', 'layer change')
+				.html(l=>{
+					const c = l.change.command;
+
+					if (c === 'moveLayer') return `<b>${l.layer}</b> moved under <b>${l.change.args[0]}</b>`
+					if (c === 'addLayer') return `<b>${l.layer}</b> inserted under <b>${l.change.args[0]}</b>`
+					if (c === 'removeLayer') return `<b>${l.layer}</b> removed`
+
+				})
 			const layer = d3.select('#all')
 				.selectAll('.layer')
 				.data(Object.entries(diff.layerProps))
@@ -147,7 +159,7 @@
 				.data(d=>d[1])
 				.enter()
 				.append('div')
-				.attr('class', 'change')
+				.attr('class', 'change borderBottom')
 				.html(d=>{
 					const colorStyle = d.args[0].includes('color') ? `background: ${d.args[1]}` : `display:none`
 					return `${d.args[0]}: <span class='colorBox' style='${colorStyle}'></span> ${str(d.args[1])} <quiet>${str(d.args[2])}</quiet>`
@@ -156,6 +168,6 @@
 		}
 
 		function str(s) {return  typeof s === 'object' ? JSON.stringify(s) : s};
-
+		parse();
 	</script>
 </html>

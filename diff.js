@@ -284,7 +284,7 @@ function diffLayers(before, after, commands, differ) {
         commands.push({command: operations.addLayer, args: [afterIndex[layerId], insertBeforeLayerId]});
         tracker.splice(tracker.length - i, 0, layerId);
 
-        if (movingLayer) differ.changeLayer(layerId, ['moved', insertBeforeLayerId])
+        if (movingLayer) differ.changeLayer(layerId, {command: 'moveLayer', args: [insertBeforeLayerId]})
         else {
 	        clean[layerId] = true;
         	differ.changeLayer(layerId, {command:'addLayer', args: [afterIndex[layerId], insertBeforeLayerId]})
