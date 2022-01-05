@@ -1,0 +1,17 @@
+on: [push, pull_request]
+
+jobs:
+  copy-to-s3:
+    name: Copy to S3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nelonoel/branch-name@v1.0.1
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete --exclude '.git/*' --exclude '.github/*' --exclude 'sprites/*'
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DEST_DIR: 'dist/${{ env.BRANCH_NAME }}'
