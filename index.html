@@ -110,13 +110,41 @@
 
 		const before = document.querySelector('#before');
 		const after = document.querySelector('#after');
-		before.value = JSON.stringify(b, null, 2);
-		after.value = JSON.stringify(a, null, 2)
-		
-		
-		function parse() {
-			const diff = diffStyles(JSON.parse(before.value), JSON.parse(after.value));
-			console.log(diff)
+			
+
+		// parse();
+
+		const state = {
+			hash: parseHash()
+		};
+
+		d3.json(state.hash.lstyle, (e,left)=>{
+
+			state.lstyle = left;
+			before.value = JSON.stringify(left, null, 2);
+
+			d3.json(state.hash.rstyle, (e,right)=>{
+
+				state.rstyle = right;
+				after.value = JSON.stringify(right, null, 2)
+
+				parse(left, right)
+			})
+		})
+
+
+		function parseHash() {
+			const output = {};
+			location.hash.replace('#','')
+				.split('&')
+				.forEach(kv=>{
+					const [key, value] = kv.split('=');
+					output[key] = value;
+				})
+			return output
+		}				
+		function parse(a,b) {
+			const diff = diffStyles(a,b);
 
 			d3.select('#all')
 				.selectAll('.layer')
@@ -168,6 +196,6 @@
 		}
 
 		function str(s) {return  typeof s === 'object' ? JSON.stringify(s) : s};
-		parse();
+		
 	</script>
 </html>

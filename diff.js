@@ -494,7 +494,7 @@ function detectMovedLayers(commands) {
 
 	function findReaddedLayer(removalCommand) {
 		const targetId = removalCommand.args[0];
-		const match = commands.find(l=>l.args?.[0].id===targetId)
+		const match = commands.find(l=>l.args?.[0]?.id===targetId)
 		if (match) blacklistAdds.push(targetId)
 		return match
 	}
