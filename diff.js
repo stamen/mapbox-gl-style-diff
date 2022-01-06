@@ -268,7 +268,7 @@ function diffLayers(before, after, commands, differ) {
         layerId = afterOrder[afterOrder.length - 1 - i];
 
         if (tracker[tracker.length - 1 - i] === layerId) continue;
-        var movingLayer;
+        var movingLayer = false;
         if (beforeIndex.hasOwnProperty(layerId)) {
         	movingLayer = true;
             // remove the layer before we insert at the correct position
@@ -290,7 +290,7 @@ function diffLayers(before, after, commands, differ) {
         	differ.changeLayer(layerId, {command:'addLayer', args: [afterIndex[layerId], insertBeforeLayerId]})
         }
     }
-
+    console.warn(afterOrder, beforeIndex)
     // update layers
     for (i = 0; i < afterOrder.length; i++) {
         layerId = afterOrder[i];
@@ -319,6 +319,7 @@ function diffLayers(before, after, commands, differ) {
         // });
 
         // layout, paint, filter, minzoom, maxzoom
+        if (!beforeLayer) console.log(layerId)
         diffLayerPropertyChanges(beforeLayer.layout, afterLayer.layout, commands, layerId, null, operations.setLayoutProperty, differ);
         diffLayerPropertyChanges(beforeLayer.paint, afterLayer.paint, commands, layerId, null, operations.setPaintProperty, differ);
         if (!isEqual(beforeLayer.filter, afterLayer.filter)) {
@@ -495,7 +496,7 @@ function detectMovedLayers(commands) {
 	function findReaddedLayer(removalCommand) {
 		const targetId = removalCommand.args[0];
 		const match = commands.find(l=>l.args?.[0]?.id===targetId)
-		if (match) blacklistAdds.push(targetId)
+		if (match) {blacklistAdds.push(targetId); console.log('moved', targetId)}
 		return match
 	}
 
