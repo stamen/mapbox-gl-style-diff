@@ -1,0 +1,211 @@
+<html>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src='sampleSet.js'></script>
+	<script src = 'diff.js'></script>
+	<style>
+
+		body {
+			font-family: Arial, sans-serif;
+			background:#eee;
+		}
+		.third {
+			width:31%;
+			height:100%;
+			float:left;
+			margin:1vw;
+			/*overflow:hidden;*/
+		}
+		textarea {
+			width:100%;
+			height:80%;
+		}
+		.removeLayer.layer {
+			border-color:orangered;
+		}
+
+		.moveLayer.layer {
+			border-color:orange;
+		}
+
+		.addLayer.layer {
+			border-color:green;
+		}
+		.moveLayer .layerName {
+			background:gold;
+		}
+
+		.addLayer .layerName {
+			background:green;
+		}
+
+		.layer {
+			border:1px solid #999;
+			border-radius:5px;
+			margin-top:10px;
+			overflow: hidden;
+			background:white;
+		}
+		.layerName {
+			background:#999;
+			border-radius:5px;
+			margin-right:5px;
+			padding:5px;
+			color:white;
+		}
+
+		.colorBox {
+			width:12px;
+			height:12px;
+			display:inline-block;
+			border-radius:50%;
+		}
+
+		.value {
+			color:#333;
+			padding:5px;
+			border-radius:5px;
+			margin-right:5px;
+			border:1px solid #999;			
+		}
+
+		.layerHeading {
+			background: #666;
+			color:white;
+			padding:10px;
+			font-weight: bold;
+		}
+		.change {
+			padding:10px;
+		}
+
+		.borderBottom {
+			border-bottom:1px solid #eee;
+		}
+		quiet {
+			opacity:0.25;
+			text-decoration: line-through;			
+		}
+
+	</style>
+	<body>
+		<div class='third'>
+			<h3>Before</h3>
+			<textarea id='before'>
+			</textarea>
+		</div>
+		<div class='third'>
+			<h3>After</h3>
+			<textarea id='after'>
+			</textarea>
+		</div>
+		<div class='third' style='overflow:scroll'>
+			<button onclick='parse()' style='display:block; width:100%; margin-top:40px; color:white; background:green; padding:10px; border-radius:10px'>Get Diff</button>
+
+			<div id='deltas'>
+				<h3>Between layers</h3>
+				<div id='layers'>
+				</div>
+				<h3>Within layers</h3>
+				<div id='layerProps'>
+				</div>
+
+				<div id='all'></div>
+			</div>
+
+		</div>
+	</body>
+	<script>
+
+		const before = document.querySelector('#before');
+		const after = document.querySelector('#after');
+			
+
+		// parse();
+
+		const state = {
+			hash: parseHash()
+		};
+
+		d3.json(state.hash.lstyle, (e,left)=>{
+
+			state.lstyle = left;
+			before.value = JSON.stringify(left, null, 2);
+
+			d3.json(state.hash.rstyle, (e,right)=>{
+
+				state.rstyle = right;
+				after.value = JSON.stringify(right, null, 2)
+
+				parse(left, right)
+			})
+		})
+
+
+		function parseHash() {
+			const output = {};
+			location.hash.replace('#','')
+				.split('&')
+				.forEach(kv=>{
+					const [key, value] = kv.split('=');
+					output[key] = value;
+				})
+			return output
+		}				
+		function parse(a,b) {
+
+			const diff = diffStyles(a || JSON.parse(before.value), b || JSON.parse(after.value));
+
+			d3.select('#all')
+				.selectAll('.layer')
+				.remove();
+
+			// between layers
+
+			d3.select('#layers')
+				.selectAll('.layer')
+				.data(diff.layers)
+				.enter()
+				.append('div')
+				.attr('class', l=>`layer change ${l.change.command}`)
+				// .classed(l=>(l.change.command), true)
+				.html(l=>{
+					const c = l.change.command;
+
+					if (c === 'moveLayer') return `<b>${l.layer}</b> moved under <b>${l.change.args[0]}</b>`
+					if (c === 'addLayer') return `<b>${l.layer}</b> inserted under <b>${l.change.args[1]}</b>`
+					if (c === 'removeLayer') return `<b>${l.layer}</b> removed`
+
+				})
+			const layer = d3.select('#all')
+				.selectAll('.layer')
+				.data(Object.entries(diff.layerProps))
+				.enter()
+				.append('div')
+				.attr('class', 'layer');
+
+			layer
+				.append('div')
+				.attr('class', 'layerHeading')
+				.text(d=>d[0])
+
+			const changes = layer
+				.append('div')
+				.attr('class', 'changes')
+
+			changes
+				.selectAll('change')
+				.data(d=>d[1])
+				.enter()
+				.append('div')
+				.attr('class', 'change borderBottom')
+				.html(d=>{
+					const colorStyle = d.args[0].includes('color') ? `background: ${d.args[1]}` : `display:none`
+					return `${d.args[0]}: <span class='colorBox' style='${colorStyle}'></span> ${str(d.args[1])} <quiet>${str(d.args[2])}</quiet>`
+				})
+			
+		}
+
+		function str(s) {return  typeof s === 'object' ? JSON.stringify(s) : s};
+		
+	</script>
+</html>
