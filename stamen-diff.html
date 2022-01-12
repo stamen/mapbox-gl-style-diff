@@ -120,9 +120,24 @@
 
 		.diffs:empty:after {
 
-			content: '(None)';
+			content: '(No changes)';
 			height:50px;
 			color:#aaa;
+		}
+
+		.button {
+			display:block; 
+			width:100%; 
+			margin-top:40px; 
+			color:white; 
+			background:#666; 
+			padding:10px; 
+			border:none;
+			cursor:pointer;
+		}
+
+		.button:hover {
+			background:#333;
 		}
 	</style>
 	<body>
@@ -145,14 +160,13 @@
 		</div>
 
 		<div class='third' style='overflow:scroll'>
-			<button onclick='parse()' style='display:block; width:100%; margin-top:40px; color:white; background:green; padding:10px; border:none'>Get Diff</button>
+			<button onclick='parse()' class='button'>Recompute Diff</button>
 
 			<div id='deltas'>
 				<h3>Between layers</h3>
 				<div id='layers' class='diffs'></div>
 				<h3>Within layers</h3>
 				<div id='layerProps' class='diffs'></div>
-				<div id='all'></div>
 			</div>
 
 		</div>
@@ -270,7 +284,7 @@
 
 				})
 
-			const layer = d3.select('#all')
+			const layer = d3.select('#layerProps')
 				.selectAll('.layer')
 				.data(Object.entries(diff.layerProps))
 				.enter()
