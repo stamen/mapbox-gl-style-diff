@@ -290,7 +290,7 @@ function diffLayers(before, after, commands, differ) {
         	differ.changeLayer(layerId, {command:'addLayer', args: [afterIndex[layerId], insertBeforeLayerId]})
         }
     }
-    console.warn(afterOrder, beforeIndex)
+
     // update layers
     for (i = 0; i < afterOrder.length; i++) {
         layerId = afterOrder[i];
@@ -300,26 +300,7 @@ function diffLayers(before, after, commands, differ) {
         // no need to update if previously added (new or moved)
         if (clean[layerId] || isEqual(beforeLayer, afterLayer)) continue;
 
-        // If source, source-layer, or type have changes, then remove the layer
-        // and add it back 'from scratch'.
-
-        // if (!isEqual(beforeLayer.source, afterLayer.source) || !isEqual(beforeLayer['source-layer'], afterLayer['source-layer']) || !isEqual(beforeLayer.type, afterLayer.type)) {
-        //     console.log('changed source or sorce layer or type')
-        //     commands.push({command: operations.removeLayer, args: [layerId]});
-        //     // we add the layer back at the same position it was already in, so
-        //     // there's no need to update the `tracker`
-        //     insertBeforeLayerId = tracker[tracker.lastIndexOf(layerId) + 1];
-        //     commands.push({command: operations.addLayer, args: [afterLayer, insertBeforeLayerId]});
-        //     continue;
-        // }
-
-        // (['source', 'source-layer', 'type']).forEach(param=>{
-        // 	const change = [beforeLayer[param], afterLayer[param]];
-        // 	if (!isEqual(...change)) commands.push({command:`set${param}`, args:change})
-        // });
-
         // layout, paint, filter, minzoom, maxzoom
-        if (!beforeLayer) console.log(layerId)
         diffLayerPropertyChanges(beforeLayer.layout, afterLayer.layout, commands, layerId, null, operations.setLayoutProperty, differ);
         diffLayerPropertyChanges(beforeLayer.paint, afterLayer.paint, commands, layerId, null, operations.setPaintProperty, differ);
         if (!isEqual(beforeLayer.filter, afterLayer.filter)) {
@@ -366,9 +347,6 @@ function diffLayers(before, after, commands, differ) {
         }
     }
 
-    console.log('bl')
-    console.log(differ)
-    // console.log(layerChanges)
 }
 
 /**
@@ -439,22 +417,7 @@ function diffStyles(before, after) {
         // First collect the {add,remove}Source commands
         const removeOrAddSourceCommands = [];
         diffSources(before.sources, after.sources, removeOrAddSourceCommands, sourcesRemoved);
-        console.warn(removeOrAddSourceCommands, sourcesRemoved)
-        // Push a removeLayer command for each style layer that depends on a
-        // source that's being removed.
-        // Also, exclude any such layers them from the input to `diffLayers`
-        // below, so that diffLayers produces the appropriate `addLayers`
-        // command
-        const beforeLayers = [];
-        if (before.layers) {
-            before.layers.forEach((layer) => {
-                if (sourcesRemoved[layer.source]) {
-                    commands.push({command: operations.removeLayer, args: [layer.id]});
-                } else {
-                    beforeLayers.push(layer);
-                }
-            });
-        }
+
 
         // Remove the terrain if the source for that terrain is being removed
         // let beforeTerrain = before.terrain;
@@ -475,15 +438,16 @@ function diffStyles(before, after) {
 
 
         // Handle changes to `layers`
-        diffLayers(beforeLayers, after.layers, commands, differ);
+        diffLayers(before.layers, after.layers, commands, differ);
 
     } catch (e) {
         // fall back to setStyle
         console.warn('Unable to compute style diff:', e);
         commands = [{command: operations.setStyle, args: [after]}];
     }
-    console.log('before detecting move: ', commands)
-    commands = detectMovedLayers(commands)
+
+    commands = detectMovedLayers(commands);
+
     return differ;
 }
 
@@ -496,7 +460,7 @@ function detectMovedLayers(commands) {
 	function findReaddedLayer(removalCommand) {
 		const targetId = removalCommand.args[0];
 		const match = commands.find(l=>l.args?.[0]?.id===targetId)
-		if (match) {blacklistAdds.push(targetId); console.log('moved', targetId)}
+		if (match) {blacklistAdds.push(targetId)}
 		return match
 	}
 

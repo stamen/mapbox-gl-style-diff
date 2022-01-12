@@ -7,18 +7,29 @@
 		body {
 			font-family: Arial, sans-serif;
 			background:#eee;
+			margin:0;
 		}
 		.third {
 			width:31%;
 			height:100%;
 			float:left;
-			margin:1vw;
+			margin:0 1vw;
 			/*overflow:hidden;*/
 		}
-		textarea {
+
+		.urlInput {
+			display:block;
+			width:100%;
+			resize:none;
+		}
+
+		.stylesheet {
 			width:100%;
 			height:80%;
+		    border: none;
+		    background: #ddd;
 		}
+
 		.removeLayer.layer {
 			border-color:orangered;
 		}
@@ -30,18 +41,28 @@
 		.addLayer.layer {
 			border-color:green;
 		}
-		.moveLayer .layerName {
-			background:gold;
+
+
+		.moveLayer b {
+			color: orange;
 		}
+
+		.removeLayer b {
+			color: orangered;
+		}
+
+		.addLayer b {
+			color: green;
+		}
+
 
 		.addLayer .layerName {
 			background:green;
 		}
 
 		.layer {
-			border:1px solid #999;
-			border-radius:5px;
-			margin-top:10px;
+			border-radius:10px;
+			margin-top:15px;
 			overflow: hidden;
 			background:white;
 		}
@@ -76,40 +97,76 @@
 		}
 		.change {
 			padding:10px;
+			text-align:right;
+			color: #666;
 		}
 
 		.borderBottom {
-			border-bottom:1px solid #eee;
+			border-bottom:2px solid #eee;
 		}
-		quiet {
-			opacity:0.25;
+
+		.left {
+			float:left;
+		}
+
+		i {
+			display: inline-block
+		}
+		.previousValue {
+			opacity:0.5;
+			color: orangered;
 			text-decoration: line-through;			
 		}
 
+		.diffs:empty:after {
+
+			content: '(No changes)';
+			height:50px;
+			color:#aaa;
+		}
+
+		.button {
+			display:block; 
+			width:100%; 
+			margin-top:40px; 
+			color:white; 
+			background:#666; 
+			padding:10px; 
+			border:none;
+			cursor:pointer;
+		}
+
+		.button:hover {
+			background:#333;
+		}
 	</style>
 	<body>
 		<div class='third'>
 			<h3>Before</h3>
-			<textarea id='before'>
-			</textarea>
+
+			<h4>Style url (Press [enter] to fetch)</h4>
+			<form onsubmit='app.setHash()'>
+				<input id='lurl' class='urlInput' rows='2' placeholder='Press enter to fetch'/>
+			</form>
+			<textarea id='before' class='stylesheet'></textarea>
 		</div>
 		<div class='third'>
 			<h3>After</h3>
-			<textarea id='after'>
-			</textarea>
+			<h4>Style url</h4>
+			<form onsubmit='app.setHash()'>
+				<input id='rurl' class='urlInput' rows='2' placeholder='Press enter to fetch'/>
+			</form>
+			<textarea id='after' class='stylesheet'></textarea>
 		</div>
+
 		<div class='third' style='overflow:scroll'>
-			<button onclick='parse()' style='display:block; width:100%; margin-top:40px; color:white; background:green; padding:10px; border-radius:10px'>Get Diff</button>
+			<button onclick='parse()' class='button'>Recompute Diff</button>
 
 			<div id='deltas'>
 				<h3>Between layers</h3>
-				<div id='layers'>
-				</div>
+				<div id='layers' class='diffs'></div>
 				<h3>Within layers</h3>
-				<div id='layerProps'>
-				</div>
-
-				<div id='all'></div>
+				<div id='layerProps' class='diffs'></div>
 			</div>
 
 		</div>
@@ -118,65 +175,116 @@
 
 		const before = document.querySelector('#before');
 		const after = document.querySelector('#after');
-			
 
-		// parse();
+		const app = {
 
-		const state = {
-			hash: parseHash()
+			parseHash: () => {
+				const output = {};
+				location.hash.replace('#','')
+					.split('&')
+					.forEach(kv=>{
+						const [key, value] = kv.split('=');
+						output[key] = value;
+					})
+				return output
+			},
+
+			setHash: () => {
+
+				location.hash = '#'+['l','r']
+					.map(side=>`${side}style=${d3.select('#'+side+'url').property('value')}`)
+					.join('&');
+
+				app.setup()
+			},
+
+			getStyle: (url, cb) => {
+				d3.json(url, (e,r)=>{
+					cb(e,r)
+				})				
+			},
+
+			setup: () => {
+
+				state.hash = app.parseHash();
+
+				d3.selectAll('.stylesheet')
+					.property('value', '')
+					.attr('placeholder', 'Loading stylesheet...');
+
+				// populate URL fields
+				['l', 'r'].forEach(side=>{
+					d3.select(`#${side}url`)
+						.property('value', state.hash[`${side}style`])
+				})
+
+				// fetch style URL's
+				app.getStyle(state.hash.lstyle, (e, left) => {
+
+					before.placeholder = e ? 'Error fetching style' : 'Paste stylesheet here'
+
+					if (!e)  {
+						state.lstyle = left;
+						before.value = JSON.stringify(left, null, 2);
+					}
+
+					app.getStyle(state.hash.rstyle, (e, right) => {
+
+						after.placeholder = e ? 'Error fetching style' : 'Paste stylesheet here'
+	
+						if (!e)  {
+							state.rstyle = right;
+							after.value = JSON.stringify(right, null, 2)
+
+							parse(left, right)
+						}
+
+					})
+				})
+			}
 		};
 
-		d3.json(state.hash.lstyle, (e,left)=>{
+		const state = {};
 
-			state.lstyle = left;
-			before.value = JSON.stringify(left, null, 2);
+		app.setup();
 
-			d3.json(state.hash.rstyle, (e,right)=>{
-
-				state.rstyle = right;
-				after.value = JSON.stringify(right, null, 2)
-
-				parse(left, right)
-			})
-		})
-
-
-		function parseHash() {
-			const output = {};
-			location.hash.replace('#','')
-				.split('&')
-				.forEach(kv=>{
-					const [key, value] = kv.split('=');
-					output[key] = value;
-				})
-			return output
-		}				
+		
 		function parse(a,b) {
 
 			const diff = diffStyles(a || JSON.parse(before.value), b || JSON.parse(after.value));
 
-			d3.select('#all')
+			d3.select('#layers')
 				.selectAll('.layer')
 				.remove();
 
 			// between layers
 
-			d3.select('#layers')
+			const layerChange = d3.select('#layers')
 				.selectAll('.layer')
 				.data(diff.layers)
 				.enter()
 				.append('div')
-				.attr('class', l=>`layer change ${l.change.command}`)
-				// .classed(l=>(l.change.command), true)
+				.attr('class', l=>`layer change ${l.change.command}`);
+
+
+			layerChange
+				.append('b')
+				.attr('class', 'left')
+				.text(l=>l.layer)
+
+
+			layerChange
+				.append('span')
 				.html(l=>{
 					const c = l.change.command;
 
-					if (c === 'moveLayer') return `<b>${l.layer}</b> moved under <b>${l.change.args[0]}</b>`
-					if (c === 'addLayer') return `<b>${l.layer}</b> inserted under <b>${l.change.args[1]}</b>`
-					if (c === 'removeLayer') return `<b>${l.layer}</b> removed`
+					if (c === 'moveLayer') return `moved under <i>${l.change.args[0]}</i>`
+					if (c === 'addLayer') return `added under <i>${l.change.args[1]}</i>`
+					if (c === 'removeLayer') return `removed`
 
 				})
-			const layer = d3.select('#all')
+
+			const layer = d3.select('#layerProps')
 				.selectAll('.layer')
 				.data(Object.entries(diff.layerProps))
 				.enter()
@@ -191,17 +299,29 @@
 			const changes = layer
 				.append('div')
 				.attr('class', 'changes')
-
-			changes
 				.selectAll('change')
 				.data(d=>d[1])
 				.enter()
 				.append('div')
-				.attr('class', 'change borderBottom')
+				.attr('class', 'change borderBottom');
+
+			changes
+				.append('b')
+				.attr('class', 'left')
+				.text(d=>d.args[0]);
+
+			changes
+				.append('span')
+				.style('color', 'green')
 				.html(d=>{
 					const colorStyle = d.args[0].includes('color') ? `background: ${d.args[1]}` : `display:none`
-					return `${d.args[0]}: <span class='colorBox' style='${colorStyle}'></span> ${str(d.args[1])} <quiet>${str(d.args[2])}</quiet>`
+					return `<span class='colorBox' style='${colorStyle}'></span> ${str(d.args[1])}`
 				})
+
+			changes
+				.append('div')
+				.attr('class', 'previousValue')
+				.text(d=>str(d.args[2]))
 			
 		}
 
