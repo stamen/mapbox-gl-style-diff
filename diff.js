@@ -263,7 +263,6 @@ function diffLayers(before, after, commands, differ) {
     }
 
     // add/reorder layers
-    console.log('beforeIndex', beforeIndex)
     for (i = 0, d = 0; i < afterOrder.length; i++) {
         // work backwards as insert is before an existing layer
         layerId = afterOrder[afterOrder.length - 1 - i];
@@ -288,7 +287,6 @@ function diffLayers(before, after, commands, differ) {
         if (movingLayer) differ.changeLayer(layerId, {command: 'moveLayer', args: [insertBeforeLayerId]})
         else {
 	        clean[layerId] = true;
-	        console.warn('newlayer', layerId)
         	differ.changeLayer(layerId, {command:'addLayer', args: [afterIndex[layerId], insertBeforeLayerId]})
         }
     }
@@ -447,9 +445,9 @@ function diffStyles(before, after) {
         console.warn('Unable to compute style diff:', e);
         commands = [{command: operations.setStyle, args: [after]}];
     }
+
     commands = detectMovedLayers(commands);
 
-    console.log(commands)
     return differ;
 }
 

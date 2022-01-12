@@ -229,8 +229,8 @@
 		function parse(a,b) {
 
 			const diff = diffStyles(a || JSON.parse(before.value), b || JSON.parse(after.value));
-			console.log(diff)
-			d3.select('#all')
+
+			d3.select('#layers')
 				.selectAll('.layer')
 				.remove();
 
