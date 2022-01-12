@@ -118,6 +118,12 @@
 			text-decoration: line-through;			
 		}
 
+		.diffs:empty:after {
+
+			content: '(None)';
+			height:50px;
+			color:#aaa;
+		}
 	</style>
 	<body>
 		<div class='third'>
@@ -127,8 +133,7 @@
 			<form onsubmit='app.setHash()'>
 				<input id='lurl' class='urlInput' rows='2' placeholder='Press enter to fetch'/>
 			</form>
-			<textarea id='before' class='stylesheet'>
-			</textarea>
+			<textarea id='before' class='stylesheet'></textarea>
 		</div>
 		<div class='third'>
 			<h3>After</h3>
@@ -136,8 +141,7 @@
 			<form onsubmit='app.setHash()'>
 				<input id='rurl' class='urlInput' rows='2' placeholder='Press enter to fetch'/>
 			</form>
-			<textarea id='after' class='stylesheet'>
-			</textarea>
+			<textarea id='after' class='stylesheet'></textarea>
 		</div>
 
 		<div class='third' style='overflow:scroll'>
@@ -145,12 +149,9 @@
 
 			<div id='deltas'>
 				<h3>Between layers</h3>
-				<div id='layers'>
-				</div>
+				<div id='layers' class='diffs'></div>
 				<h3>Within layers</h3>
-				<div id='layerProps'>
-				</div>
-
+				<div id='layerProps' class='diffs'></div>
 				<div id='all'></div>
 			</div>
 
@@ -185,18 +186,17 @@
 
 			getStyle: (url, cb) => {
 				d3.json(url, (e,r)=>{
-
-					if (e) throw e
-					else cb(r)
-
+					cb(e,r)
 				})				
 			},
+
 			setup: () => {
 
 				state.hash = app.parseHash();
 
 				d3.selectAll('.stylesheet')
-					.property('value', 'Loading stylesheet...');
+					.property('value', '')
+					.attr('placeholder', 'Loading stylesheet...');
 
 				// populate URL fields
 				['l', 'r'].forEach(side=>{
@@ -205,17 +205,26 @@
 				})
 
 				// fetch style URL's
-				app.getStyle(state.hash.lstyle, (left) => {
+				app.getStyle(state.hash.lstyle, (e, left) => {
 
-					state.lstyle = left;
-					before.value = JSON.stringify(left, null, 2);
+					before.placeholder = e ? 'Error fetching style' : 'Paste stylesheet here'
 
-					app.getStyle(state.hash.rstyle, (right) => {
+					if (!e)  {
+						state.lstyle = left;
+						before.value = JSON.stringify(left, null, 2);
+					}
 
-						state.rstyle = right;
-						after.value = JSON.stringify(right, null, 2)
+					app.getStyle(state.hash.rstyle, (e, right) => {
 
-						parse(left, right)
+						after.placeholder = e ? 'Error fetching style' : 'Paste stylesheet here'
+	
+						if (!e)  {
+							state.rstyle = right;
+							after.value = JSON.stringify(right, null, 2)
+
+							parse(left, right)
+						}
+
 					})
 				})
 			}
