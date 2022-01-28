@@ -5,10 +5,15 @@ class diffTracker {
 
 	constructor(){
 
+        this.sources = [];
 		this.layers = [];
 		this.layerProps = {};
 
 	}
+
+    changeSource(source, change) {
+        this.sources.push({source:source, change:change})
+    }
 
 	changeLayer(layer, change){
 		this.layers.push({layer:layer, change:change})
@@ -166,7 +171,7 @@ function canUpdateGeoJSON(before, after, sourceId) {
     return true;
 }
 
-function diffSources(before, after, commands, sourcesRemoved) {
+function diffSources(before, after, commands, sourcesRemoved, differ) {
     before = before || {};
     after = after || {};
 
@@ -176,6 +181,7 @@ function diffSources(before, after, commands, sourcesRemoved) {
     for (sourceId in before) {
         if (!before.hasOwnProperty(sourceId)) continue;
         if (!after.hasOwnProperty(sourceId)) {
+            differ.changeSource(sourceId, {command: 'removeSource'})
             removeSource(sourceId, commands, sourcesRemoved);
         }
     }
@@ -183,9 +189,15 @@ function diffSources(before, after, commands, sourcesRemoved) {
     // look for sources to add/update
     for (sourceId in after) {
         if (!after.hasOwnProperty(sourceId)) continue;
+
+        // add sources
         if (!before.hasOwnProperty(sourceId)) {
+            differ.changeSource(sourceId, {command: 'addSource'})
             addSource(sourceId, after, commands);
-        } else if (!isEqual(before[sourceId], after[sourceId])) {
+        } 
+        // update sources
+        else if (!isEqual(before[sourceId], after[sourceId])) {
+            differ.changeSource(sourceId, {command: 'updateSource'})
             if (before[sourceId].type === 'geojson' && after[sourceId].type === 'geojson' && canUpdateGeoJSON(before, after, sourceId)) {
                 commands.push({command: operations.setGeoJSONSourceData, args: [sourceId, after[sourceId].data]});
             } else {
@@ -416,7 +428,7 @@ function diffStyles(before, after) {
 
         // First collect the {add,remove}Source commands
         const removeOrAddSourceCommands = [];
-        diffSources(before.sources, after.sources, removeOrAddSourceCommands, sourcesRemoved);
+        diffSources(before.sources, after.sources, removeOrAddSourceCommands, sourcesRemoved, differ);
 
 
         // Remove the terrain if the source for that terrain is being removed
@@ -447,7 +459,7 @@ function diffStyles(before, after) {
     }
 
     commands = detectMovedLayers(commands);
-
+    console.log(differ)
     return differ;
 }
 
