@@ -175,7 +175,7 @@
 					.split('&')
 					.forEach(kv=>{
 						const [key, value] = kv.split('=');
-						output[key] = value;
+						output[key] = decodeURIComponent(value);
 					})
 				return output
 			},
