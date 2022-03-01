@@ -1,7 +1,7 @@
 {
-  "name": "mapbox-gl-style-format",
-  "version": "0.1.1",
-  "description": "Format Mapbox GL styles",
+  "name": "mapbox-gl-style-diff",
+  "version": "0.0.1",
+  "description": "Create a diff of two Mapbox GL styles",
   "source": "src/index.js",
   "main": "dist/main.js",
   "module": "dist/module.js",
@@ -12,14 +12,12 @@
   "author": "Stamen Design",
   "license": "ISC",
   "dependencies": {
-    "@mapbox/mapbox-gl-style-spec": "^13.23.0",
-    "json-stringify-pretty-compact": "^3.0.0",
     "yargs": "^17.2.1"
   },
   "devDependencies": {
     "parcel": "^2.0.1"
   },
   "bin": {
-    "mapbox-gl-style-format": "bin/mapbox-gl-style-format"
+    "mapbox-gl-style-diff": "bin/mapbox-gl-style-diff"
   }
 }

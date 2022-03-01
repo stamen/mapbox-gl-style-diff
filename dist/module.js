@@ -7,10 +7,10 @@ class $cc04822511c4cad9$var$diffTracker {
         this.layerProps = {
         };
     }
-    changeSource(source, change) {
+    changeSource(source, change3) {
         this.sources.push({
             source: source,
-            change: change
+            change: change3
         });
     }
     changeLayer(layer2, change1) {
@@ -28,72 +28,72 @@ class $cc04822511c4cad9$var$diffTracker {
 }
 const $cc04822511c4cad9$var$operations = {
     /*
-     * { command: 'setStyle', args: [stylesheet] }
-     */ setStyle: 'setStyle',
+   * { command: 'setStyle', args: [stylesheet] }
+   */ setStyle: 'setStyle',
     /*
-     * { command: 'addLayer', args: [layer, 'beforeLayerId'] }
-     */ addLayer: 'addLayer',
+   * { command: 'addLayer', args: [layer, 'beforeLayerId'] }
+   */ addLayer: 'addLayer',
     /*
-     * { command: 'removeLayer', args: ['layerId'] }
-     */ removeLayer: 'removeLayer',
+   * { command: 'removeLayer', args: ['layerId'] }
+   */ removeLayer: 'removeLayer',
     moveLayer: 'moveLayer',
     /*
-     * { command: 'setPaintProperty', args: ['layerId', 'prop', value] }
-     */ setPaintProperty: 'setPaintProperty',
+   * { command: 'setPaintProperty', args: ['layerId', 'prop', value] }
+   */ setPaintProperty: 'setPaintProperty',
     /*
-     * { command: 'setLayoutProperty', args: ['layerId', 'prop', value] }
-     */ setLayoutProperty: 'setLayoutProperty',
+   * { command: 'setLayoutProperty', args: ['layerId', 'prop', value] }
+   */ setLayoutProperty: 'setLayoutProperty',
     /*
-     * { command: 'setFilter', args: ['layerId', filter] }
-     */ setFilter: 'setFilter',
+   * { command: 'setFilter', args: ['layerId', filter] }
+   */ setFilter: 'setFilter',
     /*
-     * { command: 'addSource', args: ['sourceId', source] }
-     */ addSource: 'addSource',
+   * { command: 'addSource', args: ['sourceId', source] }
+   */ addSource: 'addSource',
     /*
-     * { command: 'removeSource', args: ['sourceId'] }
-     */ removeSource: 'removeSource',
+   * { command: 'removeSource', args: ['sourceId'] }
+   */ removeSource: 'removeSource',
     /*
-     * { command: 'setGeoJSONSourceData', args: ['sourceId', data] }
-     */ setGeoJSONSourceData: 'setGeoJSONSourceData',
+   * { command: 'setGeoJSONSourceData', args: ['sourceId', data] }
+   */ setGeoJSONSourceData: 'setGeoJSONSourceData',
     /*
-     * { command: 'setLayerZoomRange', args: ['layerId', 0, 22] }
-     */ setLayerZoomRange: 'setLayerZoomRange',
+   * { command: 'setLayerZoomRange', args: ['layerId', 0, 22] }
+   */ setLayerZoomRange: 'setLayerZoomRange',
     /*
-     * { command: 'setLayerProperty', args: ['layerId', 'prop', value] }
-     */ setLayerProperty: 'setLayerProperty',
+   * { command: 'setLayerProperty', args: ['layerId', 'prop', value] }
+   */ setLayerProperty: 'setLayerProperty',
     /*
-     * { command: 'setCenter', args: [[lon, lat]] }
-     */ setCenter: 'setCenter',
+   * { command: 'setCenter', args: [[lon, lat]] }
+   */ setCenter: 'setCenter',
     /*
-     * { command: 'setZoom', args: [zoom] }
-     */ setZoom: 'setZoom',
+   * { command: 'setZoom', args: [zoom] }
+   */ setZoom: 'setZoom',
     /*
-     * { command: 'setBearing', args: [bearing] }
-     */ setBearing: 'setBearing',
+   * { command: 'setBearing', args: [bearing] }
+   */ setBearing: 'setBearing',
     /*
-     * { command: 'setPitch', args: [pitch] }
-     */ setPitch: 'setPitch',
+   * { command: 'setPitch', args: [pitch] }
+   */ setPitch: 'setPitch',
     /*
-     * { command: 'setSprite', args: ['spriteUrl'] }
-     */ setSprite: 'setSprite',
+   * { command: 'setSprite', args: ['spriteUrl'] }
+   */ setSprite: 'setSprite',
     /*
-     * { command: 'setGlyphs', args: ['glyphsUrl'] }
-     */ setGlyphs: 'setGlyphs',
+   * { command: 'setGlyphs', args: ['glyphsUrl'] }
+   */ setGlyphs: 'setGlyphs',
     /*
-     * { command: 'setTransition', args: [transition] }
-     */ setTransition: 'setTransition',
+   * { command: 'setTransition', args: [transition] }
+   */ setTransition: 'setTransition',
     /*
-     * { command: 'setLighting', args: [lightProperties] }
-     */ setLight: 'setLight',
+   * { command: 'setLighting', args: [lightProperties] }
+   */ setLight: 'setLight',
     /*
-     * { command: 'setTerrain', args: [terrainProperties] }
-     */ setTerrain: 'setTerrain',
+   * { command: 'setTerrain', args: [terrainProperties] }
+   */ setTerrain: 'setTerrain',
     /*
-     *  { command: 'setFog', args: [fogProperties] }
-     */ setFog: 'setFog',
+   *  { command: 'setFog', args: [fogProperties] }
+   */ setFog: 'setFog',
     /*
-     *  { command: 'setProjection', args: [projectionProperties] }
-     */ setProjection: 'setProjection'
+   *  { command: 'setProjection', args: [projectionProperties] }
+   */ setProjection: 'setProjection'
 };
 function $cc04822511c4cad9$var$addSource(sourceId, after, commands) {
     commands.push({
@@ -402,7 +402,7 @@ function $cc04822511c4cad9$var$diffLayers(before, after, commands, differ) {
  * @param {*} [before] stylesheet to compare from
  * @param {*} after stylesheet to compare to
  * @returns Array list of changes
- */ function $cc04822511c4cad9$var$diffStyles(before, after) {
+ */ function $cc04822511c4cad9$var$diffStylesSetStyle(before, after) {
     if (!before) return [
         {
             command: $cc04822511c4cad9$var$operations.setStyle,
@@ -491,20 +491,7 @@ function $cc04822511c4cad9$var$diffLayers(before, after, commands, differ) {
         // First collect the {add,remove}Source commands
         const removeOrAddSourceCommands = [];
         $cc04822511c4cad9$var$diffSources(before.sources, after.sources, removeOrAddSourceCommands, sourcesRemoved, differ);
-        // Remove the terrain if the source for that terrain is being removed
-        // let beforeTerrain = before.terrain;
-        // if (beforeTerrain) {
-        //     if (sourcesRemoved[beforeTerrain.source]) {
-        //         commands.push({command: operations.setTerrain, args: [undefined]});
-        //         beforeTerrain = undefined;
-        //     }
-        // }
         commands = commands.concat(removeOrAddSourceCommands);
-        // Even though terrain is a top-level property
-        // Its like a layer in the sense that it depends on a source being present.
-        // if (!isEqual(beforeTerrain, after.terrain)) {
-        //     commands.push({command: operations.setTerrain, args: [after.terrain]});
-        // }
         // Handle changes to `layers`
         $cc04822511c4cad9$var$diffLayers(before.layers, after.layers, commands, differ);
     } catch (e) {
@@ -520,7 +507,6 @@ function $cc04822511c4cad9$var$diffLayers(before, after, commands, differ) {
         ];
     }
     commands = $cc04822511c4cad9$var$detectMovedLayers(commands);
-    console.log(differ);
     return differ;
 }
 function $cc04822511c4cad9$var$detectMovedLayers(commands) {
@@ -545,6 +531,112 @@ function $cc04822511c4cad9$var$detectMovedLayers(commands) {
     });
     return output;
 }
+// Added this function to change the output format to be more helpful
+const $cc04822511c4cad9$var$diffStyles = (before, after)=>{
+    const originalDiff = $cc04822511c4cad9$var$diffStylesSetStyle(before, after);
+    const { layerProps: layerProps , layers: layers , sources: sources  } = originalDiff;
+    // pallatable formatting for source additions and removals
+    const nextSources = sources.reduce((acc, s)=>{
+        const { change: change , source: source  } = s;
+        let type = change.command;
+        switch(type){
+            case 'removeSource':
+                type = 'remove';
+                break;
+            case 'addSource':
+                type = 'add';
+                break;
+        }
+        acc[source] = type;
+        return acc;
+    }, {
+    });
+    // pallatable formatting for layer additions, reorders, and removals
+    const nextLayers = layers.reduce((acc, l)=>{
+        const { change: change , layer: layer  } = l;
+        let type = change.command;
+        switch(type){
+            case 'removeLayer':
+                type = 'remove';
+                break;
+            case 'addLayer':
+                type = 'add';
+                break;
+            case 'moveLayer':
+                type = 'move';
+                break;
+        }
+        acc[layer] = {
+            type: type,
+            ...type === 'add' && {
+                layer: change?.args[0],
+                layerAbove: change?.args[1]
+            },
+            ...type === 'move' && {
+                layerAbove: change?.args[0]
+            }
+        };
+        return acc;
+    }, {
+    });
+    // pallatable formatting for layer property changes
+    const nextLayerProps = Object.keys(layerProps).reduce((acc, layerId)=>{
+        const nextLayerChanges = layerProps[layerId].reduce((accum, change)=>{
+            const { command: command , args: args  } = change;
+            let type = command;
+            switch(command){
+                case 'setFilter':
+                    type = 'filter';
+                    break;
+                // source & source-layer
+                case 'setLayerProperty':
+                    type = 'root';
+                    break;
+                case 'setPaintProperty':
+                    type = 'paint';
+                    break;
+                // min and max zoom
+                case 'setLayerZoomRange':
+                    type = 'minMaxZoom';
+                    break;
+                case 'setLayoutProperty':
+                    type = 'layout';
+                    break;
+            }
+            const [propertyId, currentValue, compareValue] = args;
+            // These are reversed out of the diffing tool
+            const current = compareValue;
+            const compare = currentValue;
+            if (type === 'root' || type === 'minMaxZoom') accum[propertyId] = {
+                current: current,
+                compare: compare
+            };
+            else if (type === 'filter') accum[propertyId] = {
+                current: current,
+                // Not sure why this is stringified
+                compare: typeof compare === 'string' ? JSON.parse(compare) : compare
+            };
+            else {
+                if (!accum[type]) accum[type] = {
+                };
+                accum[type][propertyId] = {
+                    current: current,
+                    compare: compare
+                };
+            }
+            return accum;
+        }, {
+        });
+        acc[layerId] = nextLayerChanges;
+        return acc;
+    }, {
+    });
+    return {
+        layerProps: nextLayerProps,
+        layers: nextLayers,
+        sources: nextSources
+    };
+};
 var $cc04822511c4cad9$export$2e2bcd8739ae039 = $cc04822511c4cad9$var$diffStyles;
 
 

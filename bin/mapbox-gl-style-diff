@@ -26,7 +26,7 @@ Promise.all(promises)
   .then(results => {
     const [a, b] = results;
     const diffedStyles = diff(a, b);
-    console.log(diffedStyles);
+    console.log(JSON.stringify(diffedStyles, null, 2));
   })
   .catch(err => {
     console.error(err);

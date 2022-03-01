@@ -13,8 +13,10 @@ To be implemented
 - changes to stylesheet parameters outside `layers` and `sources`
 - detecting renamed layers (in a way beyond showing them as removed and immediately readded)
 
+## Usage
 
-## running the thing
+`bin/mapbox-gl-style-diff ./path/to/style/a.json ./path/to/style/b.json`
 
-Clone the repo, and open index.html for a UI to test it in action
+## Standalone tool
 
+Currently you can also use this as a standalone tool via `stamen-diff.html`
