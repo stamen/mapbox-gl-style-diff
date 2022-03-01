@@ -1,8 +1,12 @@
+function $parcel$interopDefault(a) {
+  return a && a.__esModule ? a.default : a;
+}
 function $parcel$export(e, n, v, s) {
   Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
 }
 
-$parcel$export(module.exports, "diff", () => $87dc4c46ec1be30d$export$2e2bcd8739ae039);
+$parcel$export(module.exports, "diff", () => (/*@__PURE__*/$parcel$interopDefault($87dc4c46ec1be30d$exports)));
+var $87dc4c46ec1be30d$exports = {};
 const $87dc4c46ec1be30d$var$isEqual = (a, b)=>JSON.stringify(a) === JSON.stringify(b)
 ;
 class $87dc4c46ec1be30d$var$diffTracker {
@@ -540,7 +544,7 @@ function $87dc4c46ec1be30d$var$detectMovedLayers(commands) {
 const $87dc4c46ec1be30d$var$diffStyles = (before, after)=>{
     const originalDiff = $87dc4c46ec1be30d$var$diffStylesSetStyle(before, after);
     const { layerProps: layerProps , layers: layers , sources: sources  } = originalDiff;
-    // pallatable formatting for source additions and removals
+    // formatting for source additions and removals
     const nextSources = sources.reduce((acc, s)=>{
         const { change: change , source: source  } = s;
         let type = change.command;
@@ -556,7 +560,7 @@ const $87dc4c46ec1be30d$var$diffStyles = (before, after)=>{
         return acc;
     }, {
     });
-    // pallatable formatting for layer additions, reorders, and removals
+    // formatting for layer additions, reorders, and removals
     const nextLayers = layers.reduce((acc, l)=>{
         const { change: change , layer: layer  } = l;
         let type = change.command;
@@ -584,7 +588,7 @@ const $87dc4c46ec1be30d$var$diffStyles = (before, after)=>{
         return acc;
     }, {
     });
-    // pallatable formatting for layer property changes
+    // formatting for layer property changes
     const nextLayerProps = Object.keys(layerProps).reduce((acc, layerId)=>{
         const nextLayerChanges = layerProps[layerId].reduce((accum, change)=>{
             const { command: command , args: args  } = change;
@@ -609,7 +613,7 @@ const $87dc4c46ec1be30d$var$diffStyles = (before, after)=>{
                     break;
             }
             const [propertyId, currentValue, compareValue] = args;
-            // These are reversed out of the diffing tool
+            // These are reversed out of the set style version of the diffing tool
             const current = compareValue;
             const compare = currentValue;
             if (type === 'root' || type === 'minMaxZoom') accum[propertyId] = {
@@ -642,7 +646,7 @@ const $87dc4c46ec1be30d$var$diffStyles = (before, after)=>{
         sources: nextSources
     };
 };
-var $87dc4c46ec1be30d$export$2e2bcd8739ae039 = $87dc4c46ec1be30d$var$diffStyles;
+$87dc4c46ec1be30d$exports = $87dc4c46ec1be30d$var$diffStyles;
 
 
 
