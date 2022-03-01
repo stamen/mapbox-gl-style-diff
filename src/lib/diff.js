@@ -491,4 +491,4 @@ function detectMovedLayers(commands) {
 	return output
 }
 
-export default diffStyles
+export default diffStyles;
