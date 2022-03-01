@@ -9,7 +9,7 @@ jobs:
       - uses: nelonoel/branch-name@v1.0.1
       - uses: jakejarvis/s3-sync-action@master
         with:
-          args: --acl public-read --follow-symlinks --delete --exclude '.git/*' --exclude '.github/*' --exclude 'sprites/*'
+          args: --acl public-read --follow-symlinks --delete --exclude '*' --include 'src/lib/diff.js' --include 'stamen-diff.html'
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
