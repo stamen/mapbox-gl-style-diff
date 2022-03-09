@@ -33,21 +33,20 @@
     }
 
     .moveLayer b {
-      color: orange;
+      background: #ffc862;
+      padding: 3px;
     }
 
     .removeSource b,
     .removeLayer b {
-      color: orangered;
+      background: #ffbbbb;
+      padding: 3px;
     }
 
     .addSource b,
     .addLayer b {
-      color: green;
-    }
-
-    .addLayer .layerName {
-      background: green;
+      background: #bbffbb;
+      padding: 3px;
     }
 
     .layer {
@@ -101,11 +100,6 @@
     i {
       display: inline-block;
     }
-    .previousValue {
-      opacity: 0.5;
-      color: orangered;
-      text-decoration: line-through;
-    }
 
     .diffs:empty:after {
       content: '(No changes)';
@@ -141,6 +135,11 @@
 
     .jsondiffpatch-property-name {
       display: none;
+    }
+
+    .heading {
+      margin-bottom: 6px;
+      display: block;
     }
   </style>
   <body>
@@ -300,6 +299,7 @@
       sources
         .append('b')
         .attr('class', 'left')
+        .attr('class', 'heading')
         .text(l => l.source);
 
       sources.append('span').html(l => {
@@ -322,6 +322,7 @@
       layerChange
         .append('b')
         .attr('class', 'left')
+        .attr('class', 'heading')
         .text(l => l.layer);
 
       layerChange.append('span').html(l => {
