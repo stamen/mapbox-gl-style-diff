@@ -1,6 +1,10 @@
 <html>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="src/lib/diff.js"></script>
+  <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/jsondiffpatch/dist/jsondiffpatch.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsondiffpatch@0.4.1/dist/formatters-styles/html.css" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsondiffpatch@0.4.1/dist/formatters-styles/annotated.css" type="text/css" />
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,21 +33,20 @@
     }
 
     .moveLayer b {
-      color: orange;
+      background: #ffc862;
+      padding: 3px;
     }
 
     .removeSource b,
     .removeLayer b {
-      color: orangered;
+      background: #ffbbbb;
+      padding: 3px;
     }
 
     .addSource b,
     .addLayer b {
-      color: green;
-    }
-
-    .addLayer .layerName {
-      background: green;
+      background: #bbffbb;
+      padding: 3px;
     }
 
     .layer {
@@ -82,7 +85,6 @@
     }
     .change {
       padding: 10px;
-      text-align: right;
       color: #666;
     }
 
@@ -91,16 +93,12 @@
     }
 
     .left {
-      float: left;
+      display: block;
+      text-align: left;
     }
 
     i {
       display: inline-block;
-    }
-    .previousValue {
-      opacity: 0.5;
-      color: orangered;
-      text-decoration: line-through;
     }
 
     .diffs:empty:after {
@@ -122,6 +120,26 @@
 
     .button:hover {
       background: #333;
+    }
+
+    .diff {
+      display: block;
+      border-style:solid;
+      border-color:lightgray;
+      padding:6px;
+      margin-top:6px;
+      margin-bottom:6px;
+      border-radius:4px;
+      border-width:2px
+    }
+
+    .jsondiffpatch-property-name {
+      display: none;
+    }
+
+    .heading {
+      margin-bottom: 6px;
+      display: block;
     }
   </style>
   <body>
@@ -250,6 +268,16 @@
 
     app.setup();
 
+    function returnParsedJson(val) {
+        let nextVal = val
+        try {
+          nextVal = JSON.parse(val);
+        } catch (e) {
+          nextVal = val;
+        }
+        return nextVal;
+    }
+
     function parse(a, b) {
       const diff = diffStylesSetStyle(
         a || JSON.parse(before.value),
@@ -271,6 +299,7 @@
       sources
         .append('b')
         .attr('class', 'left')
+        .attr('class', 'heading')
         .text(l => l.source);
 
       sources.append('span').html(l => {
@@ -293,6 +322,7 @@
       layerChange
         .append('b')
         .attr('class', 'left')
+        .attr('class', 'heading')
         .text(l => l.layer);
 
       layerChange.append('span').html(l => {
@@ -331,21 +361,14 @@
         .text(d => d.args[0]);
 
       changes
-        .append('span')
-        .style('color', 'green')
-        .html(d => {
-          const colorStyle = d.args[0].includes('color')
-            ? `background: ${d.args[1]}`
-            : `display:none`;
-          return `<span class='colorBox' style='${colorStyle}'></span> ${str(
-            d.args[1]
-          )}`;
-        });
-
-      changes
         .append('div')
-        .attr('class', 'previousValue')
-        .text(d => str(d.args[2]));
+        .html(d => {
+          const before = returnParsedJson(d.args[2]);
+          const after = returnParsedJson(d.args[1]);
+          const diff = jsondiffpatch.diff(before, after);
+          const visual = jsondiffpatch.formatters.html.format(diff, before);
+          return `<div class="diff">${visual}</div>`;
+        });
     }
 
     function str(s) {
