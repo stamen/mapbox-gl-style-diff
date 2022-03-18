@@ -1,7 +1,3 @@
-function $parcel$interopDefault(a) {
-  return a && a.__esModule ? a.default : a;
-}
-var $cc04822511c4cad9$exports = {};
 const $cc04822511c4cad9$var$isEqual = (a, b)=>JSON.stringify(a) === JSON.stringify(b)
 ;
 class $cc04822511c4cad9$var$diffTracker {
@@ -641,9 +637,10 @@ const $cc04822511c4cad9$var$diffStyles = (before, after)=>{
         sources: nextSources
     };
 };
-$cc04822511c4cad9$exports = $cc04822511c4cad9$var$diffStyles;
+const $cc04822511c4cad9$export$a37e3c603d7117e5 = $cc04822511c4cad9$var$diffStyles;
 
 
 
 
+export {$cc04822511c4cad9$export$a37e3c603d7117e5 as diff};
 //# sourceMappingURL=module.js.map

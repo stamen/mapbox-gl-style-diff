@@ -1,12 +1,8 @@
-function $parcel$interopDefault(a) {
-  return a && a.__esModule ? a.default : a;
-}
 function $parcel$export(e, n, v, s) {
   Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
 }
 
-$parcel$export(module.exports, "diff", () => (/*@__PURE__*/$parcel$interopDefault($87dc4c46ec1be30d$exports)));
-var $87dc4c46ec1be30d$exports = {};
+$parcel$export(module.exports, "diff", () => $87dc4c46ec1be30d$export$a37e3c603d7117e5);
 const $87dc4c46ec1be30d$var$isEqual = (a, b)=>JSON.stringify(a) === JSON.stringify(b)
 ;
 class $87dc4c46ec1be30d$var$diffTracker {
@@ -646,7 +642,7 @@ const $87dc4c46ec1be30d$var$diffStyles = (before, after)=>{
         sources: nextSources
     };
 };
-$87dc4c46ec1be30d$exports = $87dc4c46ec1be30d$var$diffStyles;
+const $87dc4c46ec1be30d$export$a37e3c603d7117e5 = $87dc4c46ec1be30d$var$diffStyles;
 
 
 

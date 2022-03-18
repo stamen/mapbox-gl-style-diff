@@ -718,4 +718,4 @@ const diffStyles = (before, after) => {
   };
 };
 
-module.exports = diffStyles;
+export const diff = diffStyles;
