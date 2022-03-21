@@ -480,7 +480,7 @@ function diffLayers(before, after, commands, differ) {
  * @param {*} after stylesheet to compare to
  * @returns Array list of changes
  */
-function diffStylesSetStyle(before, after) {
+export function diffStylesSetStyle(before, after) {
   if (!before) return [{ command: operations.setStyle, args: [after] }];
   const differ = new diffTracker();
 

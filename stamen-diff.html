@@ -1,6 +1,5 @@
 <html>
   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="src/lib/diff.js"></script>
   <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/jsondiffpatch/dist/jsondiffpatch.umd.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsondiffpatch@0.4.1/dist/formatters-styles/html.css" type="text/css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsondiffpatch@0.4.1/dist/formatters-styles/annotated.css" type="text/css" />
@@ -147,7 +146,7 @@
       <h3>Before</h3>
 
       <h4>Style url (Press [enter] to fetch)</h4>
-      <form onsubmit="app.setHash()">
+      <form>
         <input
           id="lurl"
           class="urlInput"
@@ -160,7 +159,7 @@
     <div class="third">
       <h3>After</h3>
       <h4>Style url</h4>
-      <form onsubmit="app.setHash()">
+      <form>
         <input
           id="rurl"
           class="urlInput"
@@ -172,7 +171,7 @@
     </div>
 
     <div class="third" style="overflow: scroll">
-      <button onclick="parse()" class="button">Recompute Diff</button>
+      <button class="button">Recompute Diff</button>
 
       <div id="deltas">
         <h3>Sources</h3>
@@ -184,7 +183,9 @@
       </div>
     </div>
   </body>
-  <script>
+  <script type="module">
+    import { diffStylesSetStyle } from "./dist/module.js";
+
     const before = document.querySelector('#before');
     const after = document.querySelector('#after');
 
@@ -263,6 +264,9 @@
         });
       }
     };
+
+    d3.selectAll('form').on('submit', () => app.setHash());
+    d3.selectAll('.third button').on('click', () => parse());
 
     const state = {};
 

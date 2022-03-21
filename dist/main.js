@@ -3,6 +3,7 @@ function $parcel$export(e, n, v, s) {
 }
 
 $parcel$export(module.exports, "diff", () => $87dc4c46ec1be30d$export$a37e3c603d7117e5);
+$parcel$export(module.exports, "diffStylesSetStyle", () => $87dc4c46ec1be30d$export$c11d25f35bd6cdfa);
 const $87dc4c46ec1be30d$var$isEqual = (a, b)=>JSON.stringify(a) === JSON.stringify(b)
 ;
 class $87dc4c46ec1be30d$var$diffTracker {
@@ -390,24 +391,7 @@ function $87dc4c46ec1be30d$var$diffLayers(before, after, commands, differ) {
         }
     }
 }
-/**
- * Diff two stylesheet
- *
- * Creates semanticly aware diffs that can easily be applied at runtime.
- * Operations produced by the diff closely resemble the mapbox-gl-js API. Any
- * error creating the diff will fall back to the 'setStyle' operation.
- *
- * Example diff:
- * [
- *     { command: 'setConstant', args: ['@water', '#0000FF'] },
- *     { command: 'setPaintProperty', args: ['background', 'background-color', 'black'] }
- * ]
- *
- * @private
- * @param {*} [before] stylesheet to compare from
- * @param {*} after stylesheet to compare to
- * @returns Array list of changes
- */ function $87dc4c46ec1be30d$var$diffStylesSetStyle(before, after) {
+function $87dc4c46ec1be30d$export$c11d25f35bd6cdfa(before, after) {
     if (!before) return [
         {
             command: $87dc4c46ec1be30d$var$operations.setStyle,
@@ -538,7 +522,7 @@ function $87dc4c46ec1be30d$var$detectMovedLayers(commands) {
 }
 // Added this function to change the output format to be more helpful
 const $87dc4c46ec1be30d$var$diffStyles = (before, after)=>{
-    const originalDiff = $87dc4c46ec1be30d$var$diffStylesSetStyle(before, after);
+    const originalDiff = $87dc4c46ec1be30d$export$c11d25f35bd6cdfa(before, after);
     const { layerProps: layerProps , layers: layers , sources: sources  } = originalDiff;
     // formatting for source additions and removals
     const nextSources = sources.reduce((acc, s)=>{
