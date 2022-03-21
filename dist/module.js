@@ -1,7 +1,3 @@
-function $parcel$interopDefault(a) {
-  return a && a.__esModule ? a.default : a;
-}
-var $cc04822511c4cad9$exports = {};
 const $cc04822511c4cad9$var$isEqual = (a, b)=>JSON.stringify(a) === JSON.stringify(b)
 ;
 class $cc04822511c4cad9$var$diffTracker {
@@ -389,24 +385,7 @@ function $cc04822511c4cad9$var$diffLayers(before, after, commands, differ) {
         }
     }
 }
-/**
- * Diff two stylesheet
- *
- * Creates semanticly aware diffs that can easily be applied at runtime.
- * Operations produced by the diff closely resemble the mapbox-gl-js API. Any
- * error creating the diff will fall back to the 'setStyle' operation.
- *
- * Example diff:
- * [
- *     { command: 'setConstant', args: ['@water', '#0000FF'] },
- *     { command: 'setPaintProperty', args: ['background', 'background-color', 'black'] }
- * ]
- *
- * @private
- * @param {*} [before] stylesheet to compare from
- * @param {*} after stylesheet to compare to
- * @returns Array list of changes
- */ function $cc04822511c4cad9$var$diffStylesSetStyle(before, after) {
+function $cc04822511c4cad9$export$c11d25f35bd6cdfa(before, after) {
     if (!before) return [
         {
             command: $cc04822511c4cad9$var$operations.setStyle,
@@ -537,7 +516,7 @@ function $cc04822511c4cad9$var$detectMovedLayers(commands) {
 }
 // Added this function to change the output format to be more helpful
 const $cc04822511c4cad9$var$diffStyles = (before, after)=>{
-    const originalDiff = $cc04822511c4cad9$var$diffStylesSetStyle(before, after);
+    const originalDiff = $cc04822511c4cad9$export$c11d25f35bd6cdfa(before, after);
     const { layerProps: layerProps , layers: layers , sources: sources  } = originalDiff;
     // formatting for source additions and removals
     const nextSources = sources.reduce((acc, s)=>{
@@ -641,9 +620,10 @@ const $cc04822511c4cad9$var$diffStyles = (before, after)=>{
         sources: nextSources
     };
 };
-$cc04822511c4cad9$exports = $cc04822511c4cad9$var$diffStyles;
+const $cc04822511c4cad9$export$a37e3c603d7117e5 = $cc04822511c4cad9$var$diffStyles;
 
 
 
 
+export {$cc04822511c4cad9$export$a37e3c603d7117e5 as diff, $cc04822511c4cad9$export$c11d25f35bd6cdfa as diffStylesSetStyle};
 //# sourceMappingURL=module.js.map

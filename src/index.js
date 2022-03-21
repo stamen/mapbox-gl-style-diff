@@ -1,3 +1,3 @@
-import diff from "./lib/diff";
+import { diff, diffStylesSetStyle } from "./lib/diff";
 
-export { diff };
+export { diff, diffStylesSetStyle };
