@@ -15,7 +15,7 @@
     "yargs": "^17.2.1"
   },
   "devDependencies": {
-    "parcel": "^2.0.1"
+    "parcel": "2.6.0"
   },
   "bin": {
     "mapbox-gl-style-diff": "bin/mapbox-gl-style-diff"
