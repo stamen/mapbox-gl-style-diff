@@ -1,6 +1,6 @@
 {
   "name": "mapbox-gl-style-diff",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Create a diff of two Mapbox GL styles",
   "source": "src/index.js",
   "main": "dist/main.js",
