@@ -2,9 +2,19 @@ const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 class diffTracker {
   constructor() {
+    this.glyphs = null;
+    this.sprite = null;
     this.sources = [];
     this.layers = [];
     this.layerProps = {};
+  }
+
+  changeGlyphs(change) {
+    this.glyphs = { change: change };
+  }
+
+  changeSprite(change) {
+    this.sprite = { change: change };
   }
 
   changeSource(source, change) {
@@ -213,6 +223,7 @@ function diffSources(before, after, commands, sourcesRemoved, differ) {
       } else {
         // no update command, must remove then add
         updateSource(sourceId, after, commands, sourcesRemoved);
+        // TODO Update differ?
       }
     }
   }
@@ -505,9 +516,17 @@ export function diffStylesSetStyle(before, after) {
     }
     if (!isEqual(before.sprite, after.sprite)) {
       commands.push({ command: operations.setSprite, args: [after.sprite] });
+      differ.changeSprite({
+        command: 'setSprite',
+        args: [after.sprite, before.sprite]
+      });
     }
     if (!isEqual(before.glyphs, after.glyphs)) {
       commands.push({ command: operations.setGlyphs, args: [after.glyphs] });
+      differ.changeGlyphs({
+        command: 'setGlyphs',
+        args: [after.glyphs, before.glyphs]
+      });
     }
     if (!isEqual(before.transition, after.transition)) {
       commands.push({
@@ -554,6 +573,7 @@ export function diffStylesSetStyle(before, after) {
   }
 
   commands = detectMovedLayers(commands);
+
   return differ;
 }
 
@@ -587,7 +607,7 @@ function detectMovedLayers(commands) {
 const diffStyles = (before, after) => {
   const originalDiff = diffStylesSetStyle(before, after);
 
-  const { layerProps, layers, sources } = originalDiff;
+  const { layerProps, layers, sources, glyphs, sprite } = originalDiff;
 
   // formatting for source additions and removals
   const nextSources = sources.reduce((acc, s) => {
@@ -711,10 +731,24 @@ const diffStyles = (before, after) => {
     return acc;
   }, {});
 
+  let nextGlyphs;
+  if (glyphs?.change?.args) {
+    const [compareGlyph, currentGlyph] = glyphs?.change?.args;
+    nextGlyphs = { current: currentGlyph, compare: compareGlyph };
+  }
+
+  let nextSprite;
+  if (sprite?.change?.args) {
+    const [compareSprite, currentSprite] = sprite?.change?.args;
+    nextSprite = { current: currentSprite, compare: compareSprite };
+  }
+
   return {
     layerProps: nextLayerProps,
     layers: nextLayers,
-    sources: nextSources
+    sources: nextSources,
+    glyphs: nextGlyphs,
+    sprite: nextSprite
   };
 };
 
