@@ -223,7 +223,6 @@ function diffSources(before, after, commands, sourcesRemoved, differ) {
       } else {
         // no update command, must remove then add
         updateSource(sourceId, after, commands, sourcesRemoved);
-        // TODO Update differ?
       }
     }
   }
