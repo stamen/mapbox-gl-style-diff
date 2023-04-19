@@ -1,9 +1,21 @@
 const $2658df1f3ad7813b$var$isEqual = (a, b)=>JSON.stringify(a) === JSON.stringify(b);
 class $2658df1f3ad7813b$var$diffTracker {
     constructor(){
+        this.glyphs = null;
+        this.sprite = null;
         this.sources = [];
         this.layers = [];
         this.layerProps = {};
+    }
+    changeGlyphs(change) {
+        this.glyphs = {
+            change: change
+        };
+    }
+    changeSprite(change) {
+        this.sprite = {
+            change: change
+        };
     }
     changeSource(source, change) {
         this.sources.push({
@@ -422,18 +434,36 @@ function $2658df1f3ad7813b$export$c11d25f35bd6cdfa(before, after) {
                 after.pitch
             ]
         });
-        if (!$2658df1f3ad7813b$var$isEqual(before.sprite, after.sprite)) commands.push({
-            command: $2658df1f3ad7813b$var$operations.setSprite,
-            args: [
-                after.sprite
-            ]
-        });
-        if (!$2658df1f3ad7813b$var$isEqual(before.glyphs, after.glyphs)) commands.push({
-            command: $2658df1f3ad7813b$var$operations.setGlyphs,
-            args: [
-                after.glyphs
-            ]
-        });
+        if (!$2658df1f3ad7813b$var$isEqual(before.sprite, after.sprite)) {
+            commands.push({
+                command: $2658df1f3ad7813b$var$operations.setSprite,
+                args: [
+                    after.sprite
+                ]
+            });
+            differ.changeSprite({
+                command: "setSprite",
+                args: [
+                    after.sprite,
+                    before.sprite
+                ]
+            });
+        }
+        if (!$2658df1f3ad7813b$var$isEqual(before.glyphs, after.glyphs)) {
+            commands.push({
+                command: $2658df1f3ad7813b$var$operations.setGlyphs,
+                args: [
+                    after.glyphs
+                ]
+            });
+            differ.changeGlyphs({
+                command: "setGlyphs",
+                args: [
+                    after.glyphs,
+                    before.glyphs
+                ]
+            });
+        }
         if (!$2658df1f3ad7813b$var$isEqual(before.transition, after.transition)) commands.push({
             command: $2658df1f3ad7813b$var$operations.setTransition,
             args: [
@@ -507,7 +537,7 @@ function $2658df1f3ad7813b$var$detectMovedLayers(commands) {
 // Added this function to change the output format to be more helpful
 const $2658df1f3ad7813b$var$diffStyles = (before, after)=>{
     const originalDiff = $2658df1f3ad7813b$export$c11d25f35bd6cdfa(before, after);
-    const { layerProps: layerProps , layers: layers , sources: sources  } = originalDiff;
+    const { layerProps: layerProps , layers: layers , sources: sources , glyphs: glyphs , sprite: sprite  } = originalDiff;
     // formatting for source additions and removals
     const nextSources = sources.reduce((acc, s)=>{
         const { change: change , source: source  } = s;
@@ -599,10 +629,28 @@ const $2658df1f3ad7813b$var$diffStyles = (before, after)=>{
         acc[layerId] = nextLayerChanges;
         return acc;
     }, {});
+    let nextGlyphs;
+    if (glyphs?.change?.args) {
+        const [compareGlyph, currentGlyph] = glyphs?.change?.args;
+        nextGlyphs = {
+            current: currentGlyph,
+            compare: compareGlyph
+        };
+    }
+    let nextSprite;
+    if (sprite?.change?.args) {
+        const [compareSprite, currentSprite] = sprite?.change?.args;
+        nextSprite = {
+            current: currentSprite,
+            compare: compareSprite
+        };
+    }
     return {
         layerProps: nextLayerProps,
         layers: nextLayers,
-        sources: nextSources
+        sources: nextSources,
+        glyphs: nextGlyphs,
+        sprite: nextSprite
     };
 };
 const $2658df1f3ad7813b$export$a37e3c603d7117e5 = $2658df1f3ad7813b$var$diffStyles;
