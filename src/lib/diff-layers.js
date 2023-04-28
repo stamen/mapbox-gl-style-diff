@@ -1,8 +1,5 @@
 import { REMOVE, ADD, MOVE } from './constants';
 
-// TODO We can better determine moved layers by if:
-// - only two layers moved, just choose one
-// - otherwise, check for bottom and top layers changed
 const getMovedLayers = (a, b) => {
   const aByIndex = a.reduce((acc, layer, i) => {
     acc[layer.id] = { layerAbove: a?.[i + 1]?.id, layerBelow: a?.[i - 1]?.id };
