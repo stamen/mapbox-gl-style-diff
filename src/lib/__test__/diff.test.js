@@ -140,10 +140,6 @@ describe('diff', () => {
       const expected = {
         ...output,
         layers: {
-          'layer-1': {
-            layerAbove: undefined,
-            type: 'move'
-          },
           'layer-2': {
             layerAbove: 'layer-1',
             type: 'move'

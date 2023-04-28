@@ -60,7 +60,7 @@ const diffLayerProps = (a, b) => {
     transformCondition: () => true
   });
 
-  // Used with b to get added expressions since they won't run on a
+  // Used with 'b' to get added expressions since they won't run on 'a'
   const diffAddedExp = (layerId, afterExp, key) => {
     let propertyType = getPropertyType(key);
 

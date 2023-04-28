@@ -10,6 +10,7 @@ const getMovedLayers = (a, b) => {
   }, {});
 
   const moved = {};
+  const aboveLayers = [];
 
   for (let i = 0; i < b.length; i++) {
     const bLayer = b[i];
@@ -21,12 +22,17 @@ const getMovedLayers = (a, b) => {
       aIndex.layerAbove !== nextLayerAbove &&
       aIndex.layerBelow !== nextLayerBelow
     ) {
+      const layerAbove = b?.[i + 1]?.id;
+      aboveLayers.push(layerAbove);
       moved[bLayer.id] = {
         type: MOVE,
-        layerAbove: b?.[i + 1]?.id
+        layerAbove
       };
     }
   }
+
+  // Remove any layers that are considered switched so we aren't redundant
+  aboveLayers.forEach(id => delete moved[id]);
 
   return moved;
 };

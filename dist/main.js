@@ -1,665 +1,696 @@
-function $parcel$export(e, n, v, s) {
-  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
-}
+var $gXNCa$mapboxmapboxglstylespec = require("@mapbox/mapbox-gl-style-spec");
+var $gXNCa$mapboxglstylerecurse = require("mapbox-gl-style-recurse");
+var $gXNCa$lodashisequal = require("lodash.isequal");
 
-$parcel$export(module.exports, "diff", () => $8be22f452ef17487$export$a37e3c603d7117e5);
-$parcel$export(module.exports, "diffStylesSetStyle", () => $8be22f452ef17487$export$c11d25f35bd6cdfa);
-const $8be22f452ef17487$var$isEqual = (a, b)=>JSON.stringify(a) === JSON.stringify(b);
-class $8be22f452ef17487$var$diffTracker {
-    constructor(){
-        this.glyphs = null;
-        this.sprite = null;
-        this.sources = [];
-        this.layers = [];
-        this.layerProps = {};
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(module.exports, "diff", {
+    enumerable: true,
+    get: function get() {
+        return $8be22f452ef17487$exports.diff;
     }
-    changeGlyphs(change) {
-        this.glyphs = {
-            change: change
-        };
+});
+Object.defineProperty(module.exports, "diffStylesSetStyle", {
+    enumerable: true,
+    get: function get() {
+        return $8be22f452ef17487$exports.diffStylesSetStyle;
     }
-    changeSprite(change) {
-        this.sprite = {
-            change: change
-        };
+});
+var $8be22f452ef17487$exports = {};
+"use strict";
+Object.defineProperty($8be22f452ef17487$exports, "__esModule", {
+    value: true
+});
+$8be22f452ef17487$exports.diff = void 0;
+var $dcef7ed1cd3dbc83$exports = {};
+"use strict";
+Object.defineProperty($dcef7ed1cd3dbc83$exports, "__esModule", {
+    value: true
+});
+$dcef7ed1cd3dbc83$exports.diffLayers = void 0;
+var $d53f79a9c1941d01$exports = {};
+"use strict";
+Object.defineProperty($d53f79a9c1941d01$exports, "__esModule", {
+    value: true
+});
+$d53f79a9c1941d01$exports.UPDATE = $d53f79a9c1941d01$exports.REMOVE = $d53f79a9c1941d01$exports.MOVE = $d53f79a9c1941d01$exports.ADD = void 0;
+var $d53f79a9c1941d01$var$REMOVE = "remove";
+$d53f79a9c1941d01$exports.REMOVE = $d53f79a9c1941d01$var$REMOVE;
+var $d53f79a9c1941d01$var$ADD = "add";
+$d53f79a9c1941d01$exports.ADD = $d53f79a9c1941d01$var$ADD;
+var $d53f79a9c1941d01$var$UPDATE = "update";
+$d53f79a9c1941d01$exports.UPDATE = $d53f79a9c1941d01$var$UPDATE;
+var $d53f79a9c1941d01$var$MOVE = "move";
+$d53f79a9c1941d01$exports.MOVE = $d53f79a9c1941d01$var$MOVE;
+
+
+function $dcef7ed1cd3dbc83$var$_typeof(obj1) {
+    "@babel/helpers - typeof";
+    return $dcef7ed1cd3dbc83$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        return typeof obj;
+    } : function(obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, $dcef7ed1cd3dbc83$var$_typeof(obj1);
+}
+function $dcef7ed1cd3dbc83$var$ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        enumerableOnly && (symbols = symbols.filter(function(sym) {
+            return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        })), keys.push.apply(keys, symbols);
     }
-    changeSource(source, change) {
-        this.sources.push({
-            source: source,
-            change: change
+    return keys;
+}
+function $dcef7ed1cd3dbc83$var$_objectSpread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = null != arguments[i] ? arguments[i] : {};
+        i % 2 ? $dcef7ed1cd3dbc83$var$ownKeys(Object(source), !0).forEach(function(key) {
+            $dcef7ed1cd3dbc83$var$_defineProperty(target, key, source[key]);
+        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : $dcef7ed1cd3dbc83$var$ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
         });
     }
-    changeLayer(layer, change) {
-        this.layers.push({
-            layer: layer,
-            change: change
-        });
-    }
-    changeLayerProp(layer, change) {
-        if (!this.layerProps[layer]) this.layerProps[layer] = [
-            change
-        ];
-        else this.layerProps[layer].push(change);
+    return target;
+}
+function $dcef7ed1cd3dbc83$var$_slicedToArray(arr, i) {
+    return $dcef7ed1cd3dbc83$var$_arrayWithHoles(arr) || $dcef7ed1cd3dbc83$var$_iterableToArrayLimit(arr, i) || $dcef7ed1cd3dbc83$var$_unsupportedIterableToArray(arr, i) || $dcef7ed1cd3dbc83$var$_nonIterableRest();
+}
+function $dcef7ed1cd3dbc83$var$_nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function $dcef7ed1cd3dbc83$var$_unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return $dcef7ed1cd3dbc83$var$_arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return $dcef7ed1cd3dbc83$var$_arrayLikeToArray(o, minLen);
+}
+function $dcef7ed1cd3dbc83$var$_arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    return arr2;
+}
+function $dcef7ed1cd3dbc83$var$_iterableToArrayLimit(arr, i) {
+    var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+    if (null != _i) {
+        var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1;
+        try {
+            if (_x = (_i = _i.call(arr)).next, 0 === i) {
+                if (Object(_i) !== _i) return;
+                _n = !1;
+            } else for(; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+        } catch (err) {
+            _d = !0, _e = err;
+        } finally{
+            try {
+                if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+            } finally{
+                if (_d) throw _e;
+            }
+        }
+        return _arr;
     }
 }
-const $8be22f452ef17487$var$operations = {
-    /*
-   * { command: 'setStyle', args: [stylesheet] }
-   */ setStyle: "setStyle",
-    /*
-   * { command: 'addLayer', args: [layer, 'beforeLayerId'] }
-   */ addLayer: "addLayer",
-    /*
-   * { command: 'removeLayer', args: ['layerId'] }
-   */ removeLayer: "removeLayer",
-    moveLayer: "moveLayer",
-    /*
-   * { command: 'setPaintProperty', args: ['layerId', 'prop', value] }
-   */ setPaintProperty: "setPaintProperty",
-    /*
-   * { command: 'setLayoutProperty', args: ['layerId', 'prop', value] }
-   */ setLayoutProperty: "setLayoutProperty",
-    /*
-   * { command: 'setFilter', args: ['layerId', filter] }
-   */ setFilter: "setFilter",
-    /*
-   * { command: 'addSource', args: ['sourceId', source] }
-   */ addSource: "addSource",
-    /*
-   * { command: 'removeSource', args: ['sourceId'] }
-   */ removeSource: "removeSource",
-    /*
-   * { command: 'setGeoJSONSourceData', args: ['sourceId', data] }
-   */ setGeoJSONSourceData: "setGeoJSONSourceData",
-    /*
-   * { command: 'setLayerZoomRange', args: ['layerId', 0, 22] }
-   */ setLayerZoomRange: "setLayerZoomRange",
-    /*
-   * { command: 'setLayerProperty', args: ['layerId', 'prop', value] }
-   */ setLayerProperty: "setLayerProperty",
-    /*
-   * { command: 'setCenter', args: [[lon, lat]] }
-   */ setCenter: "setCenter",
-    /*
-   * { command: 'setZoom', args: [zoom] }
-   */ setZoom: "setZoom",
-    /*
-   * { command: 'setBearing', args: [bearing] }
-   */ setBearing: "setBearing",
-    /*
-   * { command: 'setPitch', args: [pitch] }
-   */ setPitch: "setPitch",
-    /*
-   * { command: 'setSprite', args: ['spriteUrl'] }
-   */ setSprite: "setSprite",
-    /*
-   * { command: 'setGlyphs', args: ['glyphsUrl'] }
-   */ setGlyphs: "setGlyphs",
-    /*
-   * { command: 'setTransition', args: [transition] }
-   */ setTransition: "setTransition",
-    /*
-   * { command: 'setLighting', args: [lightProperties] }
-   */ setLight: "setLight",
-    /*
-   * { command: 'setTerrain', args: [terrainProperties] }
-   */ setTerrain: "setTerrain",
-    /*
-   *  { command: 'setFog', args: [fogProperties] }
-   */ setFog: "setFog",
-    /*
-   *  { command: 'setProjection', args: [projectionProperties] }
-   */ setProjection: "setProjection"
+function $dcef7ed1cd3dbc83$var$_arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+}
+function $dcef7ed1cd3dbc83$var$_defineProperty(obj, key, value) {
+    key = $dcef7ed1cd3dbc83$var$_toPropertyKey(key);
+    if (key in obj) Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+    });
+    else obj[key] = value;
+    return obj;
+}
+function $dcef7ed1cd3dbc83$var$_toPropertyKey(arg) {
+    var key = $dcef7ed1cd3dbc83$var$_toPrimitive(arg, "string");
+    return $dcef7ed1cd3dbc83$var$_typeof(key) === "symbol" ? key : String(key);
+}
+function $dcef7ed1cd3dbc83$var$_toPrimitive(input, hint) {
+    if ($dcef7ed1cd3dbc83$var$_typeof(input) !== "object" || input === null) return input;
+    var prim = input[Symbol.toPrimitive];
+    if (prim !== undefined) {
+        var res = prim.call(input, hint || "default");
+        if ($dcef7ed1cd3dbc83$var$_typeof(res) !== "object") return res;
+        throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return (hint === "string" ? String : Number)(input);
+}
+// TODO We can better determine moved layers by if:
+// - only two layers moved, just choose one
+// - otherwise, check for bottom and top layers changed
+var $dcef7ed1cd3dbc83$var$getMovedLayers = function getMovedLayers(a, b) {
+    var aByIndex = a.reduce(function(acc, layer, i) {
+        var _a, _a2;
+        acc[layer.id] = {
+            layerAbove: a === null || a === void 0 ? void 0 : (_a = a[i + 1]) === null || _a === void 0 ? void 0 : _a.id,
+            layerBelow: a === null || a === void 0 ? void 0 : (_a2 = a[i - 1]) === null || _a2 === void 0 ? void 0 : _a2.id
+        };
+        return acc;
+    }, {});
+    var moved = {};
+    var aboveLayers = [];
+    for(var i1 = 0; i1 < b.length; i1++){
+        var _b, _b2;
+        var bLayer = b[i1];
+        var aIndex = aByIndex[bLayer.id];
+        if (!aIndex) continue;
+        var nextLayerAbove = b === null || b === void 0 ? void 0 : (_b = b[i1 + 1]) === null || _b === void 0 ? void 0 : _b.id;
+        var nextLayerBelow = b === null || b === void 0 ? void 0 : (_b2 = b[i1 - 1]) === null || _b2 === void 0 ? void 0 : _b2.id;
+        if (aIndex.layerAbove !== nextLayerAbove && aIndex.layerBelow !== nextLayerBelow) {
+            var _b3;
+            var layerAbove = b === null || b === void 0 ? void 0 : (_b3 = b[i1 + 1]) === null || _b3 === void 0 ? void 0 : _b3.id;
+            aboveLayers.push(layerAbove);
+            moved[bLayer.id] = {
+                type: $d53f79a9c1941d01$exports.MOVE,
+                layerAbove: layerAbove
+            };
+        }
+    }
+    // Remove any layers that are considered switched so we aren't redundant
+    aboveLayers.forEach(function(id) {
+        return delete moved[id];
+    });
+    return moved;
 };
-function $8be22f452ef17487$var$addSource(sourceId, after, commands) {
-    commands.push({
-        command: $8be22f452ef17487$var$operations.addSource,
-        args: [
-            sourceId,
-            after[sourceId]
-        ]
-    });
-}
-function $8be22f452ef17487$var$removeSource(sourceId, commands, sourcesRemoved) {
-    commands.push({
-        command: $8be22f452ef17487$var$operations.removeSource,
-        args: [
-            sourceId
-        ]
-    });
-    sourcesRemoved[sourceId] = true;
-}
-function $8be22f452ef17487$var$updateSource(sourceId, after, commands, sourcesRemoved) {
-    $8be22f452ef17487$var$removeSource(sourceId, commands, sourcesRemoved);
-    $8be22f452ef17487$var$addSource(sourceId, after, commands);
-}
-function $8be22f452ef17487$var$canUpdateGeoJSON(before, after, sourceId) {
-    let prop;
-    for(prop in before[sourceId]){
-        if (!before[sourceId].hasOwnProperty(prop)) continue;
-        if (prop !== "data" && !$8be22f452ef17487$var$isEqual(before[sourceId][prop], after[sourceId][prop])) return false;
-    }
-    for(prop in after[sourceId]){
-        if (!after[sourceId].hasOwnProperty(prop)) continue;
-        if (prop !== "data" && !$8be22f452ef17487$var$isEqual(before[sourceId][prop], after[sourceId][prop])) return false;
-    }
-    return true;
-}
-function $8be22f452ef17487$var$diffSources(before, after, commands, sourcesRemoved, differ) {
-    before = before || {};
-    after = after || {};
-    let sourceId;
-    // look for sources to remove
-    for(sourceId in before){
-        if (!before.hasOwnProperty(sourceId)) continue;
-        if (!after.hasOwnProperty(sourceId)) {
-            differ.changeSource(sourceId, {
-                command: "removeSource"
-            });
-            $8be22f452ef17487$var$removeSource(sourceId, commands, sourcesRemoved);
-        }
-    }
-    // look for sources to add/update
-    for(sourceId in after){
-        if (!after.hasOwnProperty(sourceId)) continue;
-        // add sources
-        if (!before.hasOwnProperty(sourceId)) {
-            differ.changeSource(sourceId, {
-                command: "addSource"
-            });
-            $8be22f452ef17487$var$addSource(sourceId, after, commands);
-        } else if (!$8be22f452ef17487$var$isEqual(before[sourceId], after[sourceId])) {
-            differ.changeSource(sourceId, {
-                command: "updateSource"
-            });
-            if (before[sourceId].type === "geojson" && after[sourceId].type === "geojson" && $8be22f452ef17487$var$canUpdateGeoJSON(before, after, sourceId)) commands.push({
-                command: $8be22f452ef17487$var$operations.setGeoJSONSourceData,
-                args: [
-                    sourceId,
-                    after[sourceId].data
-                ]
-            });
-            else // no update command, must remove then add
-            $8be22f452ef17487$var$updateSource(sourceId, after, commands, sourcesRemoved);
-        }
-    }
-}
-function $8be22f452ef17487$var$diffLayerPropertyChanges(before, after, commands, layerId, klass, command, differ) {
-    before = before || {};
-    after = after || {};
-    let prop;
-    for(prop in before){
-        if (!before.hasOwnProperty(prop)) continue;
-        if (!$8be22f452ef17487$var$isEqual(before[prop], after[prop])) {
-            const cmd = {
-                command: command,
-                args: [
-                    prop,
-                    after[prop],
-                    before[prop],
-                    klass
-                ],
-                layer: layerId
-            };
-            commands.push(cmd);
-            differ.changeLayerProp(layerId, cmd);
-        }
-    }
-    for(prop in after){
-        if (!after.hasOwnProperty(prop) || before.hasOwnProperty(prop)) continue;
-        if (!$8be22f452ef17487$var$isEqual(before[prop], after[prop])) {
-            const cmd = {
-                command: command,
-                args: [
-                    prop,
-                    after[prop],
-                    before[prop],
-                    klass
-                ],
-                layer: layerId
-            };
-            commands.push(cmd);
-            differ.changeLayerProp(layerId, cmd);
-        }
-    }
-}
-function $8be22f452ef17487$var$pluckId(layer) {
-    return layer.id;
-}
-function $8be22f452ef17487$var$indexById(group, layer) {
-    group[layer.id] = layer;
-    return group;
-}
-function $8be22f452ef17487$var$diffLayers(before, after, commands, differ) {
-    before = before || [];
-    after = after || [];
-    // order of layers by id
-    const beforeOrder = before.map($8be22f452ef17487$var$pluckId);
-    const afterOrder = after.map($8be22f452ef17487$var$pluckId);
-    // index of layer by id
-    const beforeIndex = before.reduce($8be22f452ef17487$var$indexById, {});
-    const afterIndex = after.reduce($8be22f452ef17487$var$indexById, {});
-    // track order of layers as if they have been mutated
-    const tracker = beforeOrder.slice();
-    // layers that have been added do not need to be diffed
-    const clean = Object.create(null);
-    let i, d, layerId, beforeLayer, afterLayer, insertBeforeLayerId, prop;
-    // remove layers
-    for(i = 0, d = 0; i < beforeOrder.length; i++){
-        layerId = beforeOrder[i];
-        // detect removed layer
-        if (!afterIndex.hasOwnProperty(layerId)) {
-            commands.push({
-                command: $8be22f452ef17487$var$operations.removeLayer,
-                args: [
-                    layerId
-                ]
-            });
-            differ.changeLayer(layerId, {
-                command: "removeLayer"
-            });
-            tracker.splice(tracker.indexOf(layerId, d), 1);
-        } else // limit where in tracker we need to look for a match
-        d++;
-    }
-    // add/reorder layers
-    for(i = 0, d = 0; i < afterOrder.length; i++){
-        // work backwards as insert is before an existing layer
-        layerId = afterOrder[afterOrder.length - 1 - i];
-        if (tracker[tracker.length - 1 - i] === layerId) continue;
-        var movingLayer = false;
-        if (beforeIndex.hasOwnProperty(layerId)) {
-            movingLayer = true;
-            // remove the layer before we insert at the correct position
-            commands.push({
-                command: $8be22f452ef17487$var$operations.removeLayer,
-                args: [
-                    layerId
-                ]
-            });
-            tracker.splice(tracker.lastIndexOf(layerId, tracker.length - d), 1);
-        } else // limit where in tracker we need to look for a match
-        d++;
-        // add layer at correct position
-        insertBeforeLayerId = tracker[tracker.length - i];
-        commands.push({
-            command: $8be22f452ef17487$var$operations.addLayer,
-            args: [
-                afterIndex[layerId],
-                insertBeforeLayerId
-            ]
+var $dcef7ed1cd3dbc83$var$diffLayers = function diffLayers(a, b) {
+    var additions = b.map(function(l, i) {
+        var _b4;
+        if (a.some(function(layer) {
+            return layer.id === l.id;
+        })) return false;
+        return $dcef7ed1cd3dbc83$var$_defineProperty({}, l.id, {
+            type: $d53f79a9c1941d01$exports.ADD,
+            layer: l,
+            layerAbove: b === null || b === void 0 ? void 0 : (_b4 = b[i + 1]) === null || _b4 === void 0 ? void 0 : _b4.id
         });
-        tracker.splice(tracker.length - i, 0, layerId);
-        if (movingLayer) differ.changeLayer(layerId, {
-            command: "moveLayer",
-            args: [
-                insertBeforeLayerId
-            ]
+    }).filter(Boolean);
+    var removals = a.map(function(l) {
+        if (b.some(function(layer) {
+            return layer.id === l.id;
+        })) return false;
+        return $dcef7ed1cd3dbc83$var$_defineProperty({}, l.id, {
+            type: $d53f79a9c1941d01$exports.REMOVE
         });
-        else {
-            clean[layerId] = true;
-            differ.changeLayer(layerId, {
-                command: "addLayer",
-                args: [
-                    afterIndex[layerId],
-                    insertBeforeLayerId
-                ]
-            });
-        }
-    }
-    // update layers
-    for(i = 0; i < afterOrder.length; i++){
-        layerId = afterOrder[i];
-        beforeLayer = beforeIndex[layerId];
-        afterLayer = afterIndex[layerId];
-        // no need to update if previously added (new or moved)
-        if (clean[layerId] || $8be22f452ef17487$var$isEqual(beforeLayer, afterLayer)) continue;
-        // layout, paint, filter, minzoom, maxzoom
-        $8be22f452ef17487$var$diffLayerPropertyChanges(beforeLayer.layout, afterLayer.layout, commands, layerId, null, $8be22f452ef17487$var$operations.setLayoutProperty, differ);
-        $8be22f452ef17487$var$diffLayerPropertyChanges(beforeLayer.paint, afterLayer.paint, commands, layerId, null, $8be22f452ef17487$var$operations.setPaintProperty, differ);
-        if (!$8be22f452ef17487$var$isEqual(beforeLayer.filter, afterLayer.filter)) {
-            const cmd = {
-                command: $8be22f452ef17487$var$operations.setFilter,
-                args: [
-                    "filter",
-                    JSON.stringify(afterLayer.filter),
-                    beforeLayer.filter
-                ],
-                layer: layerId
-            };
-            commands.push(cmd);
-            differ.changeLayerProp(layerId, cmd);
-        }
-        if (!$8be22f452ef17487$var$isEqual(beforeLayer.minzoom, afterLayer.minzoom)) {
-            const cmd = {
-                command: $8be22f452ef17487$var$operations.setLayerZoomRange,
-                args: [
-                    "minzoom",
-                    afterLayer.minzoom,
-                    beforeLayer.minzoom
-                ],
-                layer: layerId
-            };
-            commands.push(cmd);
-            differ.changeLayerProp(layerId, cmd);
-        }
-        if (!$8be22f452ef17487$var$isEqual(beforeLayer.maxzoom, afterLayer.maxzoom)) {
-            const cmd = {
-                command: $8be22f452ef17487$var$operations.setLayerZoomRange,
-                args: [
-                    "maxzoom",
-                    afterLayer.maxzoom,
-                    beforeLayer.maxzoom
-                ],
-                layer: layerId
-            };
-            commands.push(cmd);
-            differ.changeLayerProp(layerId, cmd);
-        }
-        // handle all other layer props, including paint.*
-        for(prop in beforeLayer){
-            if (!beforeLayer.hasOwnProperty(prop)) continue;
-            if (prop === "layout" || prop === "paint" || prop === "filter" || prop === "metadata" || prop === "minzoom" || prop === "maxzoom") continue;
-            if (prop.indexOf("paint.") === 0) $8be22f452ef17487$var$diffLayerPropertyChanges(beforeLayer[prop], afterLayer[prop], commands, layerId, prop.slice(6), $8be22f452ef17487$var$operations.setPaintProperty, differ);
-            else if (!$8be22f452ef17487$var$isEqual(beforeLayer[prop], afterLayer[prop])) {
-                const cmd = {
-                    command: $8be22f452ef17487$var$operations.setLayerProperty,
-                    args: [
-                        prop,
-                        afterLayer[prop],
-                        beforeLayer[prop]
-                    ],
-                    layer: layerId
-                };
-                commands.push(cmd);
-                differ.changeLayerProp(layerId, cmd);
-            }
-        }
-        for(prop in afterLayer){
-            if (!afterLayer.hasOwnProperty(prop) || beforeLayer.hasOwnProperty(prop)) continue;
-            if (prop === "layout" || prop === "paint" || prop === "filter" || prop === "metadata" || prop === "minzoom" || prop === "maxzoom") continue;
-            if (prop.indexOf("paint.") === 0) $8be22f452ef17487$var$diffLayerPropertyChanges(beforeLayer[prop], afterLayer[prop], commands, layerId, prop.slice(6), $8be22f452ef17487$var$operations.setPaintProperty);
-            else if (!$8be22f452ef17487$var$isEqual(beforeLayer[prop], afterLayer[prop])) {
-                const cmd = {
-                    command: $8be22f452ef17487$var$operations.setLayerProperty,
-                    args: [
-                        prop,
-                        afterLayer[prop],
-                        beforeLayer[prop]
-                    ],
-                    layer: layerId
-                };
-                commands.push(cmd);
-                differ.changeLayerProp(layerId, cmd);
-            }
-        }
-    }
-}
-function $8be22f452ef17487$export$c11d25f35bd6cdfa(before, after) {
-    if (!before) return [
-        {
-            command: $8be22f452ef17487$var$operations.setStyle,
-            args: [
-                after
-            ]
-        }
-    ];
-    const differ = new $8be22f452ef17487$var$diffTracker();
-    let commands = [];
-    try {
-        // Handle changes to top-level properties
-        if (!$8be22f452ef17487$var$isEqual(before.version, after.version)) return [
-            {
-                command: $8be22f452ef17487$var$operations.setStyle,
-                args: [
-                    after
-                ]
-            }
-        ];
-        if (!$8be22f452ef17487$var$isEqual(before.center, after.center)) commands.push({
-            command: $8be22f452ef17487$var$operations.setCenter,
-            args: [
-                after.center
-            ]
-        });
-        if (!$8be22f452ef17487$var$isEqual(before.zoom, after.zoom)) commands.push({
-            command: $8be22f452ef17487$var$operations.setZoom,
-            args: [
-                after.zoom
-            ]
-        });
-        if (!$8be22f452ef17487$var$isEqual(before.bearing, after.bearing)) commands.push({
-            command: $8be22f452ef17487$var$operations.setBearing,
-            args: [
-                after.bearing
-            ]
-        });
-        if (!$8be22f452ef17487$var$isEqual(before.pitch, after.pitch)) commands.push({
-            command: $8be22f452ef17487$var$operations.setPitch,
-            args: [
-                after.pitch
-            ]
-        });
-        if (!$8be22f452ef17487$var$isEqual(before.sprite, after.sprite)) {
-            commands.push({
-                command: $8be22f452ef17487$var$operations.setSprite,
-                args: [
-                    after.sprite
-                ]
-            });
-            differ.changeSprite({
-                command: "setSprite",
-                args: [
-                    after.sprite,
-                    before.sprite
-                ]
-            });
-        }
-        if (!$8be22f452ef17487$var$isEqual(before.glyphs, after.glyphs)) {
-            commands.push({
-                command: $8be22f452ef17487$var$operations.setGlyphs,
-                args: [
-                    after.glyphs
-                ]
-            });
-            differ.changeGlyphs({
-                command: "setGlyphs",
-                args: [
-                    after.glyphs,
-                    before.glyphs
-                ]
-            });
-        }
-        if (!$8be22f452ef17487$var$isEqual(before.transition, after.transition)) commands.push({
-            command: $8be22f452ef17487$var$operations.setTransition,
-            args: [
-                after.transition
-            ]
-        });
-        if (!$8be22f452ef17487$var$isEqual(before.light, after.light)) commands.push({
-            command: $8be22f452ef17487$var$operations.setLight,
-            args: [
-                after.light
-            ]
-        });
-        if (!$8be22f452ef17487$var$isEqual(before.fog, after.fog)) commands.push({
-            command: $8be22f452ef17487$var$operations.setFog,
-            args: [
-                after.fog
-            ]
-        });
-        if (!$8be22f452ef17487$var$isEqual(before.projection, after.projection)) commands.push({
-            command: $8be22f452ef17487$var$operations.setProjection,
-            args: [
-                after.projection
-            ]
-        });
-        // Handle changes to `sources`
-        // If a source is to be removed, we also--before the removeSource
-        // command--need to remove all the style layers that depend on it.
-        const sourcesRemoved = {};
-        // First collect the {add,remove}Source commands
-        const removeOrAddSourceCommands = [];
-        $8be22f452ef17487$var$diffSources(before.sources, after.sources, removeOrAddSourceCommands, sourcesRemoved, differ);
-        commands = commands.concat(removeOrAddSourceCommands);
-        // Handle changes to `layers`
-        $8be22f452ef17487$var$diffLayers(before.layers, after.layers, commands, differ);
-    } catch (e) {
-        // fall back to setStyle
-        console.warn("Unable to compute style diff:", e);
-        commands = [
-            {
-                command: $8be22f452ef17487$var$operations.setStyle,
-                args: [
-                    after
-                ]
-            }
-        ];
-    }
-    commands = $8be22f452ef17487$var$detectMovedLayers(commands);
-    return differ;
-}
-function $8be22f452ef17487$var$detectMovedLayers(commands) {
-    var output = [];
-    var blacklistAdds = [];
-    function findReaddedLayer(removalCommand) {
-        const targetId = removalCommand.args[0];
-        const match = commands.find((l)=>l.args?.[0]?.id === targetId);
-        if (match) blacklistAdds.push(targetId);
-        return match;
-    }
-    commands.forEach((c)=>{
-        if (c.command === "removeLayer") {
-            const readded = findReaddedLayer(c);
-            if (readded) output.push({
-                command: "moveLayer",
-                args: readded.args
-            });
-            else output.push(c);
-        } else if (c.command !== "addLayer" || !blacklistAdds.includes(c.args[0])) output.push(c);
-    });
-    return output;
-}
-// Added this function to change the output format to be more helpful
-const $8be22f452ef17487$var$diffStyles = (before, after)=>{
-    const originalDiff = $8be22f452ef17487$export$c11d25f35bd6cdfa(before, after);
-    const { layerProps: layerProps , layers: layers , sources: sources , glyphs: glyphs , sprite: sprite  } = originalDiff;
-    // formatting for source additions and removals
-    const nextSources = sources.reduce((acc, s)=>{
-        const { change: change , source: source  } = s;
-        let type = change.command;
-        switch(type){
-            case "removeSource":
-                type = "remove";
-                break;
-            case "addSource":
-                type = "add";
-                break;
-        }
-        acc[source] = type;
+    }).filter(Boolean);
+    var formatted = additions.concat(removals).reduce(function(acc, ld) {
+        var _Object$entries$ = $dcef7ed1cd3dbc83$var$_slicedToArray(Object.entries(ld)[0], 2), layerId = _Object$entries$[0], diff = _Object$entries$[1];
+        acc[layerId] = diff;
         return acc;
     }, {});
-    // formatting for layer additions, reorders, and removals
-    const nextLayers = layers.reduce((acc, l)=>{
-        const { change: change , layer: layer  } = l;
-        let type = change.command;
-        switch(type){
-            case "removeLayer":
-                type = "remove";
-                break;
-            case "addLayer":
-                type = "add";
-                break;
-            case "moveLayer":
-                type = "move";
-                break;
-        }
-        acc[layer] = {
-            type: type,
-            ...type === "add" && {
-                layer: change?.args[0],
-                layerAbove: change?.args[1]
-            },
-            ...type === "move" && {
-                layerAbove: change?.args[0]
-            }
-        };
-        return acc;
-    }, {});
-    // formatting for layer property changes
-    const nextLayerProps = Object.keys(layerProps).reduce((acc, layerId)=>{
-        const nextLayerChanges = layerProps[layerId].reduce((accum, change)=>{
-            const { command: command , args: args  } = change;
-            let type = command;
-            switch(command){
-                case "setFilter":
-                    type = "filter";
-                    break;
-                // source & source-layer
-                case "setLayerProperty":
-                    type = "root";
-                    break;
-                case "setPaintProperty":
-                    type = "paint";
-                    break;
-                // min and max zoom
-                case "setLayerZoomRange":
-                    type = "minMaxZoom";
-                    break;
-                case "setLayoutProperty":
-                    type = "layout";
-                    break;
-            }
-            const [propertyId, currentValue, compareValue] = args;
-            // These are reversed out of the set style version of the diffing tool
-            const current = compareValue;
-            const compare = currentValue;
-            if (type === "root" || type === "minMaxZoom") accum[propertyId] = {
-                current: current,
-                compare: compare
-            };
-            else if (type === "filter") accum[propertyId] = {
-                current: current,
-                // Not sure why this is stringified
-                compare: typeof compare === "string" ? JSON.parse(compare) : compare
-            };
-            else {
-                if (!accum[type]) accum[type] = {};
-                accum[type][propertyId] = {
-                    current: current,
-                    compare: compare
-                };
-            }
-            return accum;
-        }, {});
-        acc[layerId] = nextLayerChanges;
-        return acc;
-    }, {});
-    let nextGlyphs;
-    if (glyphs?.change?.args) {
-        const [compareGlyph, currentGlyph] = glyphs?.change?.args;
-        nextGlyphs = {
-            current: currentGlyph,
-            compare: compareGlyph
-        };
-    }
-    let nextSprite;
-    if (sprite?.change?.args) {
-        const [compareSprite, currentSprite] = sprite?.change?.args;
-        nextSprite = {
-            current: currentSprite,
-            compare: compareSprite
-        };
-    }
-    return {
-        layerProps: nextLayerProps,
-        layers: nextLayers,
-        sources: nextSources,
-        glyphs: nextGlyphs,
-        sprite: nextSprite
+    var reorders = $dcef7ed1cd3dbc83$var$getMovedLayers(a.filter(function(l) {
+        return !Object.keys(formatted).includes(l.id);
+    }), b.filter(function(l) {
+        return !Object.keys(formatted).includes(l.id);
+    }));
+    return $dcef7ed1cd3dbc83$var$_objectSpread($dcef7ed1cd3dbc83$var$_objectSpread({}, formatted), reorders);
+};
+$dcef7ed1cd3dbc83$exports.diffLayers = $dcef7ed1cd3dbc83$var$diffLayers;
+
+
+var $2c852ff54c170e40$exports = {};
+"use strict";
+Object.defineProperty($2c852ff54c170e40$exports, "__esModule", {
+    value: true
+});
+$2c852ff54c170e40$exports.diffLayerProps = void 0;
+
+
+
+var $2c852ff54c170e40$var$_lodash = $2c852ff54c170e40$var$_interopRequireDefault($gXNCa$lodashisequal);
+function $2c852ff54c170e40$var$_interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+        "default": obj
     };
+}
+function $2c852ff54c170e40$var$_typeof(obj1) {
+    "@babel/helpers - typeof";
+    return $2c852ff54c170e40$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        return typeof obj;
+    } : function(obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, $2c852ff54c170e40$var$_typeof(obj1);
+}
+function $2c852ff54c170e40$var$ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        enumerableOnly && (symbols = symbols.filter(function(sym) {
+            return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        })), keys.push.apply(keys, symbols);
+    }
+    return keys;
+}
+function $2c852ff54c170e40$var$_objectSpread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = null != arguments[i] ? arguments[i] : {};
+        i % 2 ? $2c852ff54c170e40$var$ownKeys(Object(source), !0).forEach(function(key) {
+            $2c852ff54c170e40$var$_defineProperty(target, key, source[key]);
+        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : $2c852ff54c170e40$var$ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+    }
+    return target;
+}
+function $2c852ff54c170e40$var$_defineProperty(obj, key, value) {
+    key = $2c852ff54c170e40$var$_toPropertyKey(key);
+    if (key in obj) Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+    });
+    else obj[key] = value;
+    return obj;
+}
+function $2c852ff54c170e40$var$_toPropertyKey(arg) {
+    var key = $2c852ff54c170e40$var$_toPrimitive(arg, "string");
+    return $2c852ff54c170e40$var$_typeof(key) === "symbol" ? key : String(key);
+}
+function $2c852ff54c170e40$var$_toPrimitive(input, hint) {
+    if ($2c852ff54c170e40$var$_typeof(input) !== "object" || input === null) return input;
+    var prim = input[Symbol.toPrimitive];
+    if (prim !== undefined) {
+        var res = prim.call(input, hint || "default");
+        if ($2c852ff54c170e40$var$_typeof(res) !== "object") return res;
+        throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return (hint === "string" ? String : Number)(input);
+}
+var $2c852ff54c170e40$var$layoutProps = $gXNCa$mapboxmapboxglstylespec.latest.layout.reduce(function(acc, layoutType) {
+    return acc.concat(Object.keys($gXNCa$mapboxmapboxglstylespec.latest[layoutType]));
+}, []);
+var $2c852ff54c170e40$var$paintProps = $gXNCa$mapboxmapboxglstylespec.latest.paint.reduce(function(acc, paintType) {
+    return acc.concat(Object.keys($gXNCa$mapboxmapboxglstylespec.latest[paintType]));
+}, []);
+var $2c852ff54c170e40$var$getPropertyType = function getPropertyType(key) {
+    var propertyType = "root";
+    if ($2c852ff54c170e40$var$layoutProps.includes(key)) propertyType = "layout";
+    if ($2c852ff54c170e40$var$paintProps.includes(key)) propertyType = "paint";
+    return propertyType;
 };
-const $8be22f452ef17487$export$a37e3c603d7117e5 = $8be22f452ef17487$var$diffStyles;
+var $2c852ff54c170e40$var$diffLayerProps = function diffLayerProps(a, b) {
+    var diff = {};
+    // This function runs inside the style expressions to find single matches and populate the warnings array
+    var diffExp = function diffExp(layerId, beforeExp, key) {
+        var propertyType = $2c852ff54c170e40$var$getPropertyType(key);
+        var bLayer = b.layers.find(function(l) {
+            return l.id === layerId;
+        });
+        if (bLayer) {
+            var comparisonValue = propertyType === "root" ? bLayer[key] : bLayer[propertyType][key];
+            if (!(0, $2c852ff54c170e40$var$_lodash["default"])(beforeExp, comparisonValue)) {
+                var _diff$layerId, _diff$layerId$propert, _diff$layerId2;
+                var type;
+                if (beforeExp === undefined && comparisonValue !== undefined) type = "add";
+                if (beforeExp !== undefined && comparisonValue === undefined) type = "remove";
+                if (beforeExp !== undefined && comparisonValue !== undefined) type = "update";
+                diff[layerId] = $2c852ff54c170e40$var$_objectSpread($2c852ff54c170e40$var$_objectSpread({}, (_diff$layerId = diff === null || diff === void 0 ? void 0 : diff[layerId]) !== null && _diff$layerId !== void 0 ? _diff$layerId : {}), {}, $2c852ff54c170e40$var$_defineProperty({}, propertyType, $2c852ff54c170e40$var$_objectSpread($2c852ff54c170e40$var$_objectSpread({}, (_diff$layerId$propert = diff === null || diff === void 0 ? void 0 : (_diff$layerId2 = diff[layerId]) === null || _diff$layerId2 === void 0 ? void 0 : _diff$layerId2[propertyType]) !== null && _diff$layerId$propert !== void 0 ? _diff$layerId$propert : {}), {}, $2c852ff54c170e40$var$_defineProperty({}, key, {
+                    type: type,
+                    before: beforeExp,
+                    after: comparisonValue
+                }))));
+            }
+        }
+        // We return the existing match expression as-is because createRecurseStyle
+        // can also be used to transform a stylesheet, but we only want to use it to warn
+        return beforeExp;
+    };
+    var checkExpressions = (0, $gXNCa$mapboxglstylerecurse.createRecurseStyle)({
+        transformFn: diffExp,
+        transformCondition: function transformCondition() {
+            return true;
+        }
+    });
+    // Used with 'b' to get added expressions since they won't run on 'a'
+    var diffAddedExp = function diffAddedExp(layerId, afterExp, key) {
+        var propertyType = $2c852ff54c170e40$var$getPropertyType(key);
+        var aLayer = a.layers.find(function(l) {
+            return l.id === layerId;
+        });
+        if (aLayer) {
+            var comparisonValue = propertyType === "root" ? aLayer[key] : aLayer[propertyType][key];
+            if (afterExp !== undefined && comparisonValue === undefined) {
+                var _diff$layerId3, _diff$layerId$propert2, _diff$layerId4;
+                diff[layerId] = $2c852ff54c170e40$var$_objectSpread($2c852ff54c170e40$var$_objectSpread({}, (_diff$layerId3 = diff === null || diff === void 0 ? void 0 : diff[layerId]) !== null && _diff$layerId3 !== void 0 ? _diff$layerId3 : {}), {}, $2c852ff54c170e40$var$_defineProperty({}, propertyType, $2c852ff54c170e40$var$_objectSpread($2c852ff54c170e40$var$_objectSpread({}, (_diff$layerId$propert2 = diff === null || diff === void 0 ? void 0 : (_diff$layerId4 = diff[layerId]) === null || _diff$layerId4 === void 0 ? void 0 : _diff$layerId4[propertyType]) !== null && _diff$layerId$propert2 !== void 0 ? _diff$layerId$propert2 : {}), {}, $2c852ff54c170e40$var$_defineProperty({}, key, {
+                    type: "add",
+                    after: afterExp,
+                    before: comparisonValue
+                }))));
+            }
+        }
+        // We return the existing match expression as-is because createRecurseStyle
+        // can also be used to transform a stylesheet, but we only want to use it to warn
+        return afterExp;
+    };
+    var checkAddedExpressions = (0, $gXNCa$mapboxglstylerecurse.createRecurseStyle)({
+        transformFn: diffAddedExp,
+        transformCondition: function transformCondition() {
+            return true;
+        }
+    });
+    checkExpressions(a);
+    checkAddedExpressions(b);
+    return diff;
+};
+$2c852ff54c170e40$exports.diffLayerProps = $2c852ff54c170e40$var$diffLayerProps;
+
+
+var $e74b7ff1b915b434$exports = {};
+"use strict";
+Object.defineProperty($e74b7ff1b915b434$exports, "__esModule", {
+    value: true
+});
+$e74b7ff1b915b434$exports.diffSources = void 0;
+
+var $e74b7ff1b915b434$var$_lodash = $e74b7ff1b915b434$var$_interopRequireDefault($gXNCa$lodashisequal);
+
+function $e74b7ff1b915b434$var$_interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+        "default": obj
+    };
+}
+function $e74b7ff1b915b434$var$_typeof(obj1) {
+    "@babel/helpers - typeof";
+    return $e74b7ff1b915b434$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        return typeof obj;
+    } : function(obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, $e74b7ff1b915b434$var$_typeof(obj1);
+}
+function $e74b7ff1b915b434$var$_slicedToArray(arr, i) {
+    return $e74b7ff1b915b434$var$_arrayWithHoles(arr) || $e74b7ff1b915b434$var$_iterableToArrayLimit(arr, i) || $e74b7ff1b915b434$var$_unsupportedIterableToArray(arr, i) || $e74b7ff1b915b434$var$_nonIterableRest();
+}
+function $e74b7ff1b915b434$var$_nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function $e74b7ff1b915b434$var$_unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return $e74b7ff1b915b434$var$_arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return $e74b7ff1b915b434$var$_arrayLikeToArray(o, minLen);
+}
+function $e74b7ff1b915b434$var$_arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    return arr2;
+}
+function $e74b7ff1b915b434$var$_iterableToArrayLimit(arr, i) {
+    var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+    if (null != _i) {
+        var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1;
+        try {
+            if (_x = (_i = _i.call(arr)).next, 0 === i) {
+                if (Object(_i) !== _i) return;
+                _n = !1;
+            } else for(; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+        } catch (err) {
+            _d = !0, _e = err;
+        } finally{
+            try {
+                if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+            } finally{
+                if (_d) throw _e;
+            }
+        }
+        return _arr;
+    }
+}
+function $e74b7ff1b915b434$var$_arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+}
+function $e74b7ff1b915b434$var$ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        enumerableOnly && (symbols = symbols.filter(function(sym) {
+            return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        })), keys.push.apply(keys, symbols);
+    }
+    return keys;
+}
+function $e74b7ff1b915b434$var$_objectSpread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = null != arguments[i] ? arguments[i] : {};
+        i % 2 ? $e74b7ff1b915b434$var$ownKeys(Object(source), !0).forEach(function(key) {
+            $e74b7ff1b915b434$var$_defineProperty(target, key, source[key]);
+        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : $e74b7ff1b915b434$var$ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+    }
+    return target;
+}
+function $e74b7ff1b915b434$var$_defineProperty(obj, key, value) {
+    key = $e74b7ff1b915b434$var$_toPropertyKey(key);
+    if (key in obj) Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+    });
+    else obj[key] = value;
+    return obj;
+}
+function $e74b7ff1b915b434$var$_toPropertyKey(arg) {
+    var key = $e74b7ff1b915b434$var$_toPrimitive(arg, "string");
+    return $e74b7ff1b915b434$var$_typeof(key) === "symbol" ? key : String(key);
+}
+function $e74b7ff1b915b434$var$_toPrimitive(input, hint) {
+    if ($e74b7ff1b915b434$var$_typeof(input) !== "object" || input === null) return input;
+    var prim = input[Symbol.toPrimitive];
+    if (prim !== undefined) {
+        var res = prim.call(input, hint || "default");
+        if ($e74b7ff1b915b434$var$_typeof(res) !== "object") return res;
+        throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return (hint === "string" ? String : Number)(input);
+}
+var $e74b7ff1b915b434$var$diffSources = function diffSources(a, b) {
+    var diff = {};
+    var consistentSourceKeys = Object.keys($e74b7ff1b915b434$var$_objectSpread($e74b7ff1b915b434$var$_objectSpread({}, a), b));
+    var additions = Object.entries(b).reduce(function(acc, _ref) {
+        var _ref2 = $e74b7ff1b915b434$var$_slicedToArray(_ref, 2), k = _ref2[0], v = _ref2[1];
+        if (!a[k]) {
+            acc[k] = {
+                type: $d53f79a9c1941d01$exports.ADD,
+                source: v
+            };
+            consistentSourceKeys = consistentSourceKeys.filter(function(item) {
+                return item !== k;
+            });
+        }
+        return acc;
+    }, {});
+    var removals = Object.entries(a).reduce(function(acc, _ref3) {
+        var _ref4 = $e74b7ff1b915b434$var$_slicedToArray(_ref3, 2), k = _ref4[0], v = _ref4[1];
+        if (!b[k]) {
+            acc[k] = {
+                type: $d53f79a9c1941d01$exports.REMOVE
+            };
+            consistentSourceKeys = consistentSourceKeys.filter(function(item) {
+                return item !== k;
+            });
+        }
+        return acc;
+    }, {});
+    var updates = consistentSourceKeys.reduce(function(acc, k) {
+        var equal = (0, $e74b7ff1b915b434$var$_lodash["default"])(a[k], b[k]);
+        if (!equal) acc[k] = {
+            type: $d53f79a9c1941d01$exports.UPDATE,
+            before: a[k],
+            after: b[k]
+        };
+        return acc;
+    }, {});
+    diff = $e74b7ff1b915b434$var$_objectSpread($e74b7ff1b915b434$var$_objectSpread($e74b7ff1b915b434$var$_objectSpread({}, additions), removals), updates);
+    return diff;
+};
+$e74b7ff1b915b434$exports.diffSources = $e74b7ff1b915b434$var$diffSources;
+
+
+var $b989ec17977e4465$exports = {};
+"use strict";
+Object.defineProperty($b989ec17977e4465$exports, "__esModule", {
+    value: true
+});
+$b989ec17977e4465$exports.diffRoot = void 0;
+
+var $b989ec17977e4465$var$_lodash = $b989ec17977e4465$var$_interopRequireDefault($gXNCa$lodashisequal);
+function $b989ec17977e4465$var$_interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+        "default": obj
+    };
+}
+function $b989ec17977e4465$var$_typeof(obj1) {
+    "@babel/helpers - typeof";
+    return $b989ec17977e4465$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        return typeof obj;
+    } : function(obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, $b989ec17977e4465$var$_typeof(obj1);
+}
+function $b989ec17977e4465$var$ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        enumerableOnly && (symbols = symbols.filter(function(sym) {
+            return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        })), keys.push.apply(keys, symbols);
+    }
+    return keys;
+}
+function $b989ec17977e4465$var$_objectSpread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = null != arguments[i] ? arguments[i] : {};
+        i % 2 ? $b989ec17977e4465$var$ownKeys(Object(source), !0).forEach(function(key) {
+            $b989ec17977e4465$var$_defineProperty(target, key, source[key]);
+        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : $b989ec17977e4465$var$ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+    }
+    return target;
+}
+function $b989ec17977e4465$var$_defineProperty(obj, key, value) {
+    key = $b989ec17977e4465$var$_toPropertyKey(key);
+    if (key in obj) Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+    });
+    else obj[key] = value;
+    return obj;
+}
+function $b989ec17977e4465$var$_toPropertyKey(arg) {
+    var key = $b989ec17977e4465$var$_toPrimitive(arg, "string");
+    return $b989ec17977e4465$var$_typeof(key) === "symbol" ? key : String(key);
+}
+function $b989ec17977e4465$var$_toPrimitive(input, hint) {
+    if ($b989ec17977e4465$var$_typeof(input) !== "object" || input === null) return input;
+    var prim = input[Symbol.toPrimitive];
+    if (prim !== undefined) {
+        var res = prim.call(input, hint || "default");
+        if ($b989ec17977e4465$var$_typeof(res) !== "object") return res;
+        throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return (hint === "string" ? String : Number)(input);
+}
+var $b989ec17977e4465$var$diffRoot = function diffRoot(a, b) {
+    var supportedKeys = [
+        "glyphs",
+        "sprite",
+        "id",
+        "name",
+        "fog",
+        "light",
+        "terrain"
+    ];
+    var diff = {};
+    for(var _i = 0, _supportedKeys = supportedKeys; _i < _supportedKeys.length; _i++){
+        var key = _supportedKeys[_i];
+        if (!(0, $b989ec17977e4465$var$_lodash["default"])(a === null || a === void 0 ? void 0 : a[key], b === null || b === void 0 ? void 0 : b[key])) {
+            var next = {
+                before: a === null || a === void 0 ? void 0 : a[key],
+                after: b === null || b === void 0 ? void 0 : b[key]
+            };
+            var type = void 0;
+            if ((a === null || a === void 0 ? void 0 : a[key]) === undefined && (b === null || b === void 0 ? void 0 : b[key]) !== undefined) type = "add";
+            if ((a === null || a === void 0 ? void 0 : a[key]) !== undefined && (b === null || b === void 0 ? void 0 : b[key]) === undefined) type = "remove";
+            if ((a === null || a === void 0 ? void 0 : a[key]) !== undefined && (b === null || b === void 0 ? void 0 : b[key]) !== undefined) type = "update";
+            diff[key] = $b989ec17977e4465$var$_objectSpread($b989ec17977e4465$var$_objectSpread({}, next), {}, {
+                type: type
+            });
+        }
+    }
+    return diff;
+};
+$b989ec17977e4465$exports.diffRoot = $b989ec17977e4465$var$diffRoot;
+
+
+function $8be22f452ef17487$var$_typeof(obj1) {
+    "@babel/helpers - typeof";
+    return $8be22f452ef17487$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        return typeof obj;
+    } : function(obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, $8be22f452ef17487$var$_typeof(obj1);
+}
+function $8be22f452ef17487$var$ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        enumerableOnly && (symbols = symbols.filter(function(sym) {
+            return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        })), keys.push.apply(keys, symbols);
+    }
+    return keys;
+}
+function $8be22f452ef17487$var$_objectSpread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = null != arguments[i] ? arguments[i] : {};
+        i % 2 ? $8be22f452ef17487$var$ownKeys(Object(source), !0).forEach(function(key) {
+            $8be22f452ef17487$var$_defineProperty(target, key, source[key]);
+        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : $8be22f452ef17487$var$ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+    }
+    return target;
+}
+function $8be22f452ef17487$var$_defineProperty(obj, key, value) {
+    key = $8be22f452ef17487$var$_toPropertyKey(key);
+    if (key in obj) Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+    });
+    else obj[key] = value;
+    return obj;
+}
+function $8be22f452ef17487$var$_toPropertyKey(arg) {
+    var key = $8be22f452ef17487$var$_toPrimitive(arg, "string");
+    return $8be22f452ef17487$var$_typeof(key) === "symbol" ? key : String(key);
+}
+function $8be22f452ef17487$var$_toPrimitive(input, hint) {
+    if ($8be22f452ef17487$var$_typeof(input) !== "object" || input === null) return input;
+    var prim = input[Symbol.toPrimitive];
+    if (prim !== undefined) {
+        var res = prim.call(input, hint || "default");
+        if ($8be22f452ef17487$var$_typeof(res) !== "object") return res;
+        throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return (hint === "string" ? String : Number)(input);
+}
+var $8be22f452ef17487$var$defaultOutput = {
+    root: {},
+    layerProps: {},
+    layers: {},
+    sources: {}
+};
+var $8be22f452ef17487$var$diff = function diff(a, b) {
+    var styleDiff = {};
+    var layersA = a.layers, sourcesA = a.sources;
+    var layersB = b.layers, sourcesB = b.sources;
+    var layerDiff = (0, $dcef7ed1cd3dbc83$exports.diffLayers)(layersA, layersB);
+    var layerPropDiff = (0, $2c852ff54c170e40$exports.diffLayerProps)(a, b);
+    var sourceDiff = (0, $e74b7ff1b915b434$exports.diffSources)(sourcesA, sourcesB);
+    var rootDiff = (0, $b989ec17977e4465$exports.diffRoot)(a, b);
+    styleDiff.layers = layerDiff;
+    styleDiff.layerProps = layerPropDiff;
+    styleDiff.sources = sourceDiff;
+    styleDiff.root = rootDiff;
+    return $8be22f452ef17487$var$_objectSpread($8be22f452ef17487$var$_objectSpread({}, $8be22f452ef17487$var$defaultOutput), styleDiff);
+};
+$8be22f452ef17487$exports.diff = $8be22f452ef17487$var$diff;
 
 
 
