@@ -15,13 +15,15 @@ const diffRoot = (a, b) => {
 
   for (const key of supportedKeys) {
     if (!isEqual(a?.[key], b?.[key])) {
-      let next = { before: a?.[key], after: b?.[key] };
-      let type;
-      if (a?.[key] === undefined && b?.[key] !== undefined) type = 'add';
-      if (a?.[key] !== undefined && b?.[key] === undefined) type = 'remove';
-      if (a?.[key] !== undefined && b?.[key] !== undefined) type = 'update';
-
-      diff[key] = { ...next, type };
+      if (a?.[key] === undefined && b?.[key] !== undefined) {
+        diff[key] = { value: b?.[key], type: 'add' };
+      }
+      if (a?.[key] !== undefined && b?.[key] === undefined) {
+        diff[key] = { type: 'remove' };
+      }
+      if (a?.[key] !== undefined && b?.[key] !== undefined) {
+        diff[key] = { before: a?.[key], after: b?.[key], type: 'update' };
+      }
     }
   }
 
