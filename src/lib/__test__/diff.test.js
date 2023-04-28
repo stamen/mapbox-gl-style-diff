@@ -21,7 +21,7 @@ describe('diff', () => {
           'line-color': 'red'
         },
         layout: {
-          'line-width': 5
+          'line-cap': 'round'
         }
       },
       {
@@ -32,8 +32,7 @@ describe('diff', () => {
     ]
   };
   const output = {
-    glyphs: undefined,
-    sprite: undefined,
+    root: {},
     layerProps: {},
     layers: {},
     sources: {}
@@ -45,18 +44,54 @@ describe('diff', () => {
     compare = clone(style);
   });
 
-  test('diffs layer props', () => {
-    compare.layers[0].paint['line-color'] = 'green';
-    const actual = diff(style, compare);
-    const expected = {
-      ...output,
-      layerProps: {
-        'layer-1': {
-          paint: { 'line-color': { current: 'red', compare: 'green' } }
+  describe('diffs layer props', () => {
+    test('layer prop update', () => {
+      compare.layers[0].paint['line-color'] = 'green';
+      const actual = diff(style, compare);
+      const expected = {
+        ...output,
+        layerProps: {
+          'layer-1': {
+            paint: {
+              'line-color': { before: 'red', after: 'green', type: 'update' }
+            }
+          }
         }
-      }
-    };
-    expect(actual).toEqual(expected);
+      };
+      expect(actual).toEqual(expected);
+    });
+
+    test('layer prop addition', () => {
+      compare.layers[0].paint['line-width'] = 5;
+      const actual = diff(style, compare);
+      const expected = {
+        ...output,
+        layerProps: {
+          'layer-1': {
+            paint: {
+              'line-width': { before: undefined, after: 5, type: 'add' }
+            }
+          }
+        }
+      };
+      expect(actual).toEqual(expected);
+    });
+
+    test('layer prop removal', () => {
+      delete compare.layers[0].paint['line-color'];
+      const actual = diff(style, compare);
+      const expected = {
+        ...output,
+        layerProps: {
+          'layer-1': {
+            paint: {
+              'line-color': { before: 'red', after: undefined, type: 'remove' }
+            }
+          }
+        }
+      };
+      expect(actual).toEqual(expected);
+    });
   });
 
   describe('diffs layers', () => {
@@ -95,6 +130,7 @@ describe('diff', () => {
           }
         }
       };
+
       expect(actual).toEqual(expected);
     });
 
@@ -106,6 +142,10 @@ describe('diff', () => {
         layers: {
           'layer-1': {
             layerAbove: undefined,
+            type: 'move'
+          },
+          'layer-2': {
+            layerAbove: 'layer-1',
             type: 'move'
           }
         }
@@ -124,7 +164,12 @@ describe('diff', () => {
       const expected = {
         ...output,
         sources: {
-          b: 'add'
+          b: {
+            type: 'add',
+            source: {
+              url: 'https://tile-url-b.mvt'
+            }
+          }
         }
       };
       expect(actual).toEqual(expected);
@@ -136,7 +181,7 @@ describe('diff', () => {
       const expected = {
         ...output,
         sources: {
-          a: 'remove'
+          a: { type: 'remove' }
         }
       };
       expect(actual).toEqual(expected);
@@ -149,36 +194,52 @@ describe('diff', () => {
       const expected = {
         ...output,
         sources: {
-          a: 'updateSource'
+          a: {
+            type: 'update',
+            after: {
+              url: 'https://other-tile-url.mvt'
+            },
+            before: {
+              url: 'https://tile-url.mvt'
+            }
+          }
         }
       };
       expect(actual).toEqual(expected);
     });
   });
 
-  test('diffs glyphs', () => {
-    compare.glyphs = 'https://other-glyphs-url/{fontstack}/{range}.pbf';
-    const actual = diff(style, compare);
-    const expected = {
-      ...output,
-      glyphs: {
-        current: 'https://glyphs-url/{fontstack}/{range}.pbf',
-        compare: 'https://other-glyphs-url/{fontstack}/{range}.pbf'
-      }
-    };
-    expect(actual).toEqual(expected);
-  });
+  describe('diffs root', () => {
+    test('diffs glyphs', () => {
+      compare.glyphs = 'https://other-glyphs-url/{fontstack}/{range}.pbf';
+      const actual = diff(style, compare);
+      const expected = {
+        ...output,
+        root: {
+          glyphs: {
+            type: 'update',
+            before: 'https://glyphs-url/{fontstack}/{range}.pbf',
+            after: 'https://other-glyphs-url/{fontstack}/{range}.pbf'
+          }
+        }
+      };
+      expect(actual).toEqual(expected);
+    });
 
-  test('diffs sprite', () => {
-    compare.sprite = 'https://other-sprite-url.png';
-    const actual = diff(style, compare);
-    const expected = {
-      ...output,
-      sprite: {
-        current: 'https://sprite-url.png',
-        compare: 'https://other-sprite-url.png'
-      }
-    };
-    expect(actual).toEqual(expected);
+    test('diffs sprite', () => {
+      compare.sprite = 'https://other-sprite-url.png';
+      const actual = diff(style, compare);
+      const expected = {
+        ...output,
+        root: {
+          sprite: {
+            type: 'update',
+            before: 'https://sprite-url.png',
+            after: 'https://other-sprite-url.png'
+          }
+        }
+      };
+      expect(actual).toEqual(expected);
+    });
   });
 });
